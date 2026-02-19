@@ -1,29 +1,21 @@
 # Senior Engineer Evaluation Framework
 
-**Propnet.ai - AI-Powered Real Estate Platform**
+**Propnet.ai - Real Estate Platform**
 
 ---
 
 ## What We're Building
 
-Propnet.ai is transforming real estate. Think Uber meets Zillow meets Claude.
+Real estate platform like Propnet. Not a CRUD app. This is:
 
-Buyers, sellers, and agents all on one platform. AI handles:
-- Property matching
-- Scheduling showings
-- Market analysis
-- Follow-ups
-- Negotiations
-
-This is not a CRUD app. It's:
-- Real-time (property changes instantly)
-- Data-heavy (thousands of properties)
-- AI-intensive (agents that do real work)
-- Trust-critical (people's homes, significant money)
+- **Real-time**: Property status changes instantly. Multiple people viewing same property need to see updates.
+- **Data-heavy**: 100k+ properties, 50 photos each, thousands of markers on a map.
+- **AI-intensive**: Agents that match buyers to properties, schedule showings, handle negotiations.
+- **Trust-critical**: People's life savings. Mistakes cost money.
 
 ---
 
-## What Makes Senior Different from Intern
+## Senior vs Intern
 
 **Intern**: Can ship defined tasks  
 **Senior**: Defines what to build and how
@@ -38,157 +30,283 @@ This is not a CRUD app. It's:
 
 ## Senior Frontend Engineer
 
-### Experience Requirements
+### What We Need
 
-#### 1. Large Application Architecture
-**What it means**: You've managed big codebases.
+#### 1. Large App Architecture
+You've managed 10k+ line codebases. You know when to split, when to combine.
 
 **The hard part**:
 > "When do I split this component vs keep it together?"
 
-Co-location isn't just files. It's about what loads together, what can be cached, what affects Time to Interactive.
+Co-location is about what loads together, what can be cached, what affects TTI.
 
-**What we need**: You've shipped features in 10,000+ line codebases.
+**Question**: "Walk me through how you'd structure a dashboard with 50 components."
 
 #### 2. State Management at Scale
-**What it means**: Multiple data sources need to work together.
+Server state, client state, URL state - keeping them in sync is hard.
 
 **The hard part**:
 > "Why is my state out of sync?"
 
-React Query for server state. Zustand for client. URL for shareable. Keeping them synchronized is hard. Knowing when to use which is harder.
+React Query for server. Zustand for client. URL for shareable. Knowing when to use which is harder than using them.
 
-**What we need**: You've designed state architecture for complex apps.
+**Question**: "User filters properties, shares URL with friend. Friend sees filtered results. How?"
 
-#### 3. Performance Optimization
-**What it means**: Fast = good. Slow = users leave.
+#### 3. Performance
+You've taken slow apps and made them fast. You know profiling tools.
 
 **The hard part**:
 > "It's slow but I don't know why."
 
-Performance profiling is its own skill. Chrome DevTools isn't enough. Need to understand what metrics matter.
+Performance profiling is its own skill. Chrome DevTools isn't enough.
 
-**What we need**: You've taken something slow and made it fast.
+**Question**: "LCP is 4s. How do you find what's causing it?"
 
-### Propnet-Specific Challenges
+### Propnet Challenges
 
-**1. Maps Integration**
-- Property markers (thousands)
-- Clustering
-- Different zoom levels
+**Maps** - 5,000 property markers
+- Marker clustering
+- Viewport-based loading
+- Different zoom levels = different detail
 
-**Why hard**: Performance. Different detail at different zoom.
+**Real-time** - Property status changes
+- WebSocket management
+- Optimistic updates
+- Conflict resolution
 
-**2. Media Gallery**
-- 20-50 photos per property
+**Media** - 20-50 photos per property
 - Lazy loading
 - Image optimization
+- Upload queuing
 
-**Why hard**: Can't load all at once. Storage costs.
-
-**3. Real-Time Updates**
-- Status changes (available → sold)
-- Price changes
-- Multiple viewers
-
-**Why hard**: WebSocket management, optimistic updates.
-
-**4. Complex Forms**
-- Property listings (30+ fields)
+**Forms** - 30+ field property listings
 - Multi-step wizards
 - Draft saving
+- Validation
 
-**Why hard**: State across steps. Validation complexity.
-
-### Evaluation Rubric
-
-| Category | Competent (3) | Strong (4) | Expert (5) |
-|----------|---------------|------------|------------|
-| Architecture | Can design features | Can design systems | Can design platform |
-| Performance | Optimize known issues | Find unknown issues | Prevent issues |
-| State Management | Uses patterns correctly | Chooses right pattern | Creates new patterns |
-| Code Quality | Clean, tested | Documented, reviewed | Enables others |
-| Leadership | Ships features | Mentors interns | Sets direction |
-
-**Minimum**: 15+ / 25
+### Libraries We Use
+- Next.js 14 (App Router, Server Components, streaming)
+- React Query (TanStack Query v5)
+- Zustand
+- Tailwind CSS
+- React Hook Form + Zod
+- @tanstack/react-table
+- Recharts or Chart.js
+- Mapbox GL JS or @react-google-maps/api
+- Socket.io-client
+- date-fns
 
 ---
 
 ## Senior Backend Engineer
 
-### Experience Requirements
+### What We Need
 
-#### 1. Database Design at Scale
-**What it means**: You know how data should be organized.
+#### 1. Database Design
+You can design schemas, write queries, optimize performance.
 
 **The hard part**:
 > "This query is slow but I don't know why."
 
-EXPLAIN ANALYZE is your friend. ORM generates queries, not magic. Knowing when to denormalize.
+EXPLAIN ANALYZE shows you the plan. ORM generates queries, not magic.
 
-**What we need**: You've designed schemas and optimized queries.
+**Question**: "Design schema for properties, agents, and showings. How do you find showings for an agent today?"
 
 #### 2. API Design
-**What it means**: Others consume your APIs. Make them good.
+You've designed APIs used by others. You know versioning.
 
 **The hard part**:
 > "Should this be a new endpoint or query param?"
 
-API design is about abstractions. Getting it wrong breaks clients.
+Getting abstraction wrong breaks clients. Breaking changes are expensive.
 
-**What we need**: You've designed APIs used by others.
+**Question**: "Design API for property search with 15 filters, pagination, geo queries."
 
 #### 3. Distributed Systems
-**What it means**: Things don't always work on one machine.
+Caching, queues, eventual consistency.
 
 **The hard part**:
 > "Why did the user see old data?"
 
-Caching means data can be stale. Knowing when consistency matters vs when eventual is fine.
+Caching means stale data. Knowing when consistency matters vs when eventual is fine.
 
-**What we need**: You've worked with caching, queues, distributed data.
+**Question**: "Property status cached in Redis. Agent updates it. How long until all users see new status?"
 
 #### 4. Security
-**What it means**: Protect user data. Always.
+Auth flows, authorization, API security.
 
 **The hard part**:
 > "Is this secure?"
 
-Security isn't a feature. It's a mindset. Knowing attack vectors, common mistakes.
+Security is a mindset, not a feature.
 
-**What we need**: You've handled auth, authorization, API security.
+**Question**: "User can only see properties in their region. How do you enforce this?"
 
-### Propnet-Specific Challenges
+### Propnet Challenges
 
-**1. Search & Filtering**
-- 15+ filter options
-- Geo queries
-- Full-text search
+**Search** - 100k+ properties, 15 filters, geo
+- Indexing strategy (GIN, BRIN, spatial)
+- Query building
+- Caching
 
-**Why hard**: Different filters need different indexes.
-
-**2. Media Handling**
-- Image upload/processing
-- Thumbnail generation
+**Media** - Image upload/processing
+- Async processing (Celery)
 - CDN integration
+- Thumbnail generation
 
-**Why hard**: Processing takes time. Storage costs.
+**Scheduling** - Showings, open houses
+- Conflict detection
+- Time zone handling
+- Reminder system
 
-**3. Scheduling**
-- Showings
-- Open houses
-- Time zones
+**Real-time** - WebSocket server
+- Connection management
+- Room-based messaging
+- Reconnection logic
 
-**Why hard**: Real-world conflicts. "Agent A says 2pm, Agent B says 2pm."
+### Libraries We Use
+- FastAPI
+- SQLAlchemy 2.0 (async)
+- Alembic
+- Celery + Redis
+- Pydantic v2
+- python-jose (JWT)
+- passlib + bcrypt
+- httpx
+- asyncpg
+- psycopg2-binary
 
-**4. Notifications**
-- Email, SMS, push
-- Scheduled notifications
-- Opt-out handling
+---
 
-**Why hard**: Delivery guarantees. Rate limits.
+## Senior AI/ML Engineer
 
-### Evaluation Rubric
+### What We Need
+
+#### 1. LLM Integration
+You've shipped LLM integrations to production.
+
+**The hard part**:
+> "The model keeps giving bad answers."
+
+Prompt debugging is hard because you can't step through it.
+
+**Question**: "User complains the agent suggests wrong properties. How do you debug?"
+
+#### 2. Agent Architecture
+You've built agent systems that run in production.
+
+**The hard part**:
+> "The agent keeps doing X when I asked for Y."
+
+Agents can loop, hallucinate, misinterpret. Guardrails and monitoring are critical.
+
+**Question**: "Agent suggests the same property 10 times. What happened?"
+
+#### 3. Vector Databases
+You've implemented RAG systems.
+
+**The hard part**:
+> "RAG isn't returning good results."
+
+Is it the embedding? Chunking? Retrieval? Prompt? Need systematic debugging.
+
+**Question**: "User asks 'find homes like this one' - how does this work?"
+
+### Propnet Challenges
+
+**Property Matching**
+- "I want modern but not noisy"
+- Learning from behavior
+- "Why this property?" (explainability)
+
+**Conversation Context**
+- 50 message history
+- Context window limits
+- Summarization strategy
+
+**Market Analysis**
+- Price predictions
+- Trend analysis
+- Comparable sales
+
+**Content Generation**
+- Property descriptions
+- Marketing copy
+- Must sound natural
+
+### Libraries We Use
+- CrewAI
+- LangGraph
+- LangChain
+- OpenAI SDK (GPT-4, GPT-4 Turbo)
+- Pinecone
+- tiktoken
+- sentence-transformers (text-embedding-3)
+- Weaviate or Chroma (optional)
+
+---
+
+## Where We'll Have Trouble
+
+### 1. Map Performance
+5,000 markers crashes browsers.
+
+**Question**: "How do you render 5,000 property markers?"
+
+**Answer we're looking for**: Clustering, viewport loading, virtualization, canvas rendering
+
+### 2. Search Latency
+100k properties, 15 filters, geo queries.
+
+**Question**: "How do you make search under 200ms?"
+
+**Answer we're looking for**: Indexing, query optimization, caching, read replicas
+
+### 3. Real-Time Updates
+Multiple users viewing same property.
+
+**Question**: "User A and B both viewing property. A buys it. How does B know?"
+
+**Answer we're looking for**: WebSocket, SSE, or polling with trade-offs explained
+
+### 4. Image Processing
+30 photos per property, thumbnail generation.
+
+**Question**: "User uploads 30 photos. What happens?"
+
+**Answer we're looking for**: Background job, CDN, async processing, queue
+
+### 5. Agent Reliability
+AI keeps making same mistakes.
+
+**Question**: "Agent suggests sold properties. Fix it."
+
+**Answer we're looking for**: Guardrails, validation, retry limits, human review
+
+### 6. Context Management
+Long conversations hit LLM limits.
+
+**Question**: "User has 100 messages. What do you do?"
+
+**Answer we're looking for**: Summarization, retrieval, truncation with trade-offs
+
+---
+
+## Evaluation Rubric
+
+### Frontend
+
+| Category | Competent (3) | Strong (4) | Expert (5) |
+|----------|---------------|------------|------------|
+| Architecture | Can design features | Can design systems | Can design platform |
+| Performance | Optimize known issues | Find unknown issues | Prevent issues |
+| State | Uses patterns | Chooses right pattern | Creates patterns |
+| Code Quality | Clean, tested | Documented, reviewed | Enables others |
+| Leadership | Ships features | Mentors interns | Sets direction |
+
+**Minimum**: 15+ / 25
+
+### Backend
 
 | Category | Competent (3) | Strong (4) | Expert (5) |
 |----------|---------------|------------|------------|
@@ -200,70 +318,7 @@ Security isn't a feature. It's a mindset. Knowing attack vectors, common mistake
 
 **Minimum**: 15+ / 25
 
----
-
-## Senior AI/ML Engineer
-
-### Experience Requirements
-
-#### 1. LLM Integration
-**What it means**: Making AI work in production.
-
-**The hard part**:
-> "The model keeps giving bad answers."
-
-Prompt debugging is hard because you can't step through. Need systematic approaches.
-
-**What we need**: You've shipped LLM integrations.
-
-#### 2. Agent Architecture
-**What it means**: AI that takes actions, not just answers.
-
-**The hard part**:
-> "The agent keeps doing the wrong thing."
-
-Agents can get into loops or misinterpret. Guardrails and monitoring critical.
-
-**What we need**: You've built agent systems.
-
-#### 3. Vector Databases
-**What it means**: Making AI remember things.
-
-**The hard part**:
-> "RAG isn't returning good results."
-
-Is it the embedding? Chunking? Retrieval? Prompt? Need systematic debugging.
-
-**What we need**: You've implemented RAG systems.
-
-### Propnet-Specific Challenges
-
-**1. Property Matching**
-- "I want something modern but not noisy"
-- Learning from behavior
-- "Why this property?"
-
-**Why hard**: Preferences are complex. Attribution is hard.
-
-**2. Conversation Agents**
-- Remembering context
-- Handling interruptions
-
-**Why hard**: Context windows limited. Need smart summarization.
-
-**3. Market Analysis**
-- Price predictions
-- Market trends
-
-**Why hard**: Real estate is local. Data sparse.
-
-**4. Content Generation**
-- Property descriptions
-- Marketing copy
-
-**Why hard**: Must sound natural, not AI-generated.
-
-### Evaluation Rubric
+### AI
 
 | Category | Competent (3) | Strong (4) | Expert (5) |
 |----------|---------------|------------|------------|
@@ -277,70 +332,76 @@ Is it the embedding? Chunking? Retrieval? Prompt? Need systematic debugging.
 
 ---
 
-## Technical Deep Dive
+## Deep Technical Questions
 
-### What You Should Know
+### Frontend
 
-#### Profiling Tools
+1. **"Walk me through Next.js 14 App Router. What's different from Pages Router?"**
+   - Server Components vs Client Components
+   - Streaming, suspense
+   - Layouts
 
-**Frontend**:
-- Chrome DevTools Performance
-- Lighthouse
-- Bundle analyzer
-- React DevTools Profiler
+2. **"How would you optimize a page with 50 images?"**
+   - Lazy loading (native + Intersection Observer)
+   - srcset for responsive images
+   - CDN
+   - Blur placeholder
 
-**Backend**:
-- Py-spy
-- pg_stat_statements
-- Redis MONITOR
+3. **"Design state for a property filter with 15 options that persists in URL."**
+   - URLSearchParams
+   - Debouncing
+   - Shareable links
 
-**AI**:
-- LangSmith
-- Custom logging
+4. **"WebSocket disconnects. What do you do?"**
+   - Reconnection logic with exponential backoff
+   - Queueing messages offline
+   - State resync
 
-#### Must-Know Libraries
+### Backend
 
-**Frontend**: Next.js 14, React Query, Zustand, Tailwind CSS, Playwright
+1. **"Design property search for 100k properties with filters and geo."**
+   - PostgreSQL with PostGIS
+   - Indexing strategy
+   - Query building
+   - Caching layer
 
-**Backend**: FastAPI, SQLAlchemy 2.0, Alembic, Celery, Redis
+2. **"How do you handle image upload for 30 photos?"**
+   - S3 presigned URL
+   - Async processing (Celery)
+   - CDN invalidation
 
-**AI**: CrewAI, LangGraph, OpenAI SDK, Pinecone
+3. **"Property status cached in Redis. Agent updates. How long until users see it?"**
+   - Cache TTL
+   - Write-through vs write-back
+   - Event-based invalidation
 
----
+4. **"Design API rate limiting."**
+   - Per-user vs per-IP
+   - Token bucket vs sliding window
+   - Redis implementation
 
-## Common Questions
+### AI
 
-### For All
+1. **"Design RAG for property Q&A."**
+   - Chunking strategy
+   - Embedding model
+   - Retrieval
+   - Prompt
 
-1. **"Walk me through how you'd design X"**
-   - System thinking, trade-offs, scaling
+2. **"Agent keeps hallucinating property prices."**
+   - Tool validation
+   - Result checking
+   - Fallback responses
 
-2. **"What's the hardest technical problem you've solved?"**
-   - Depth, problem-solving approach
+3. **"User conversation is 10k tokens. What do you do?"**
+   - Summarization
+   - Retrieval from history
+   - Truncation
 
-3. **"How do you stay current with technology?"**
-   - Learning habits, curiosity
-
-4. **"Tell me about a time you disagreed with your team"**
-   - Communication, collaboration
-
-### For Frontend
-
-1. **"How would you optimize a page with LCP of 4s?"**
-2. **"When do you use Server vs Client Components?"**
-3. **"How do you handle state shared across 10 components?"**
-
-### For Backend
-
-1. **"Design an API for 10,000 properties with 20 filters"**
-2. **"How would you handle a service that's down?"**
-3. **"SQL vs NoSQL for this use case?"**
-
-### For AI
-
-1. **"How would you evaluate if RAG is working?"**
-2. **"What happens when LLM API is down?"**
-3. **"How would you reduce hallucinations?"**
+4. **"How do you measure RAG quality?"**
+   - Retrieval metrics (precision, recall)
+   - Answer quality (LLM as judge)
+   - End-to-end evaluation
 
 ---
 
@@ -362,34 +423,36 @@ Is it the embedding? Chunking? Retrieval? Prompt? Need systematic debugging.
 
 ## What Success Looks Like
 
-**After 3 months**:
-- Shipped 2-3 major features
-- Code reviewed by team
-- Mentored 1-2 interns
+**3 months**: Shipped 2-3 major features, code reviewed by team, mentored 1-2 interns
 
-**After 6 months**:
-- Owns significant area
-- Makes architectural decisions
-- Leads technical discussions
+**6 months**: Owns significant area, makes architectural decisions, leads discussions
 
-**After 12 months**:
-- Sets technical direction for team
-- Mentors senior-ish engineers
-- Drives technical excellence
+**12 months**: Sets technical direction for team, mentors senior-ish engineers, drives excellence
 
 ---
 
-## Apply
+## Questions to Ask
 
-**Email**: himanshu.dixit@nexod.ai
+### For All
+1. "What's the hardest technical problem you've solved?"
+2. "How do you stay current with technology?"
+3. "Tell me about a disagreement with your team."
 
-Include:
-1. GitHub
-2. Resume or LinkedIn
-3. Brief: What's the hardest technical problem you've solved? How?
+### Frontend
+1. "LCP is 4s. Walk me through debugging."
+2. "Server vs Client Components - when to use which?"
+3. "State shared across 20 components - how do you handle?"
 
-Let's talk code.
+### Backend
+1. "Design API for 100k properties with 15 filters."
+2. "Service is down - how do you handle?"
+3. "SQL vs NoSQL - what for this platform?"
+
+### AI
+1. "How do you evaluate RAG quality?"
+2. "LLM API is down - what happens?"
+3. "How do you reduce hallucinations?"
 
 ---
 
-*Propnet.ai - Building the Future of Real Estate*
+*Propnet.ai - Building Real Estate's Future*

@@ -1,308 +1,314 @@
 # Intern Evaluation Framework
 
-**Propnet.ai - AI-Powered Real Estate Platform**
+**Propnet.ai - Real Estate Platform**
 
 ---
 
 ## What We're Building
 
-Propnet.ai is transforming real estate. It's Uber for real estate - buyers, sellers, agents, all connected through AI.
+Real estate platform like Propnet. The hard part isn't listing properties - it's building trust in a high-stakes transaction where mistakes cost people money.
 
-The platform handles:
-- Property listings and searches
-- AI-powered property matching
-- Scheduling showings and open houses
-- Market analysis and price predictions
-- Agent-client communication
+**What makes this platform hard:**
 
-This isn't a simple CRUD app. It's real-time, data-heavy, and trust-critical.
+- Properties have 30-50 photos, maps with thousands of pins, real-time status changes
+- Search needs to handle 15+ filters plus geo queries
+- AI matching "I want a modern house near work but not noisy" is genuinely hard
+- Scheduling involves time zones, conflicts, reminders
+- This isn't a toy app - people's life savings are involved
 
 ---
 
-## Education Requirements
+## What We Look For
 
-### What We Look For
+**Education**: CS degree preferred, but if you've built things and can explain your code, that's what matters.
 
-**Preferred**:
-- Computer Science or related field
-- Strong fundamentals in data structures, algorithms
-
-**Acceptable**:
-- Self-taught with strong portfolio
-- Bootcamp with demonstrated projects
-- Related technical field
-
-**What Actually Matters**:
-- Can you code? That's it.
-- Projects speak louder than diplomas.
+**The real test**: Can you figure things out? Can you explain your thinking?
 
 ---
 
 ## Frontend Intern
 
-### Must Understand
+### Technical Requirements
 
-#### 1. React Fundamentals
-**What it means**: You build UIs. You need to know how React works under the hood.
+#### Must Know
 
-**The hard part**:
+**React**
+- useState, useEffect, useCallback, useMemo, useRef
+- Custom hooks
+- Context API
+- How re-rendering works
+
+**The part that trips everyone up**:
 > "Why is my component re-rendering infinitely?"
 
-Most interns struggle with useEffect dependencies. The dependency array tells React when to re-run. Missing something = infinite loop. Adding everything = performance issues.
+Your useEffect has a function in the dependency array that changes on every render. Fix: wrap in useCallback or move inside useEffect.
 
-**How to evaluate**: Ask them to debug a component that's re-rendering infinitely.
+**Interview question**: "Walk me through what happens when this useEffect runs."
 
-**What good looks like**: They can explain why useEffect runs, when it runs, and how to prevent infinite loops.
+**TypeScript**
+- Basic types, interfaces, types
+- Generics at basic level
+- Why "any" is bad
 
-#### 2. TypeScript Basics
-**What it means**: Code should be safe. Types catch bugs before production.
+**Interview question**: "Type this function: takes array of objects with id, returns object with that id."
 
-**The hard part**:
-> "Why does this generic work?"
+**HTTP/APIs**
+- GET, POST, PUT, DELETE
+- Status codes: 200, 201, 400, 401, 403, 404, 500
+- Query params vs body
 
-Generics are abstract. `<T>` means "this can be any type." Understanding that once chosen, the type stays consistent is the key insight.
+**Interview question**: "When would you use GET vs POST? What about PUT vs PATCH?"
 
-**How to evaluate**: Ask them to type a function that takes an array and returns the first item.
+**CSS**
+- Box model
+- Flexbox (justify-content vs align-items)
+- Grid basics
+- Media queries
 
-**What good looks like**: They use proper types, avoid `any`, understand interfaces vs types.
+**Interview question**: "Center a div both horizontally and vertically. Three ways."
 
-#### 3. HTTP/APIs
-**What it means**: Your frontend talks to servers. You need to know how.
+#### Should Know
 
-**The hard part**:
-> "Why is my POST failing?"
+- Next.js App Router basics
+- React Query or SWR basics
+- Git (commit, push, PR)
 
-Understanding that GET = read (no side effects), POST = create, PUT = replace. And that 400 means "you sent something wrong" while 401 means "who are you?"
+#### We'll Ask About Real Estate Stuff
 
-**What good looks like**: They know status codes, can read API responses, understand query params vs body.
+**Maps**
+- How would you render 5,000 property markers on a map without it being slow?
+- What is marker clustering?
 
-#### 4. CSS Layout
-**What it means**: Things need to look right on all screens.
+**Real-time**
+- Property status changes from "available" to "under contract" - how does the frontend know?
+- WebSocket vs polling vs Server-Sent Events
 
-**The hard part**:
-> "Why isn't my flexbox centering?"
+**Forms**
+- Property listing form has 30 fields - how do you handle state?
+- What happens if user refreshes mid-form?
 
-justify-content = main axis. align-items = cross axis. This confuses everyone at first.
-
-**What good looks like**: They can build responsive layouts without fighting CSS.
-
-### Should Know
-- Next.js basics (we use App Router)
-- Basic testing (render, screen)
-- Git workflow
-
-### Nice to Have
-- React Query
-- Zustand
-- Playwright
+**Libraries we use**: Next.js 14, React Query, Zustand, Tailwind CSS, React Hook Form + Zod, Playwright
 
 ---
 
 ## Backend Intern
 
-### Must Understand
+### Technical Requirements
 
-#### 1. Python Async
-**What it means**: Programs need to handle many things at once.
+#### Must Know
 
-**The hard part**:
-> "Why doesn't my async run in parallel?"
+**Python**
+- Classes, decorators, async/await
+- List comprehensions, generators
+- Type hints
 
-Async = concurrent, not parallel. You need `asyncio.gather()` to run things at the same time. The event loop is confusing at first.
+**The part that trips everyone up**:
+> "Why doesn't this async code run in parallel?"
 
-**How to evaluate**: Ask them to explain what happens when you call two async functions.
+You called await on each function instead of asyncio.gather(). Async is concurrent, not parallel.
 
-**What good looks like**: They understand event loop, know when to use await vs gather.
+**Interview question**: "What's the difference between sync and async? When would you use each?"
 
-#### 2. REST APIs
-**What it means**: Servers expose functionality through HTTP.
+**REST APIs**
+- What makes something RESTful
+- Proper status codes
+- Request/response lifecycle
 
-**The hard part**:
-> "GET or POST?"
+**Interview question**: "Design an endpoint to list properties with filters. What should the URL look like?"
 
-GET = read, POST = create, PUT = replace, DELETE = remove. The hardest part is knowing when to use query params vs body.
+**SQL**
+- SELECT, INSERT, UPDATE, DELETE
+- JOINs (INNER, LEFT)
+- WHERE, GROUP BY, ORDER BY
+- Basic indexes
 
-**What good looks like**: They design proper REST endpoints, use correct status codes.
+**Interview question**: "Write a query to get all properties with their agent's name."
 
-#### 3. SQL Basics
-**What it means**: Data lives in databases. You need to get it out.
+**FastAPI + Pydantic**
+- How validation works
+- Dependency injection
+- Why we use schemas
 
-**The hard part**:
-> "Why is this query slow?"
+**The part that trips everyone up**:
+> "Why do I need both SQLAlchemy model and Pydantic schema?"
 
-Understanding indexes and execution plans. Most don't realize that SELECT * is usually bad, or that missing indexes scan entire tables.
+One is for the database, one is for the API. They're different representations.
 
-**How to evaluate**: Ask them to write a query joining users and their properties.
+**Interview question**: "What's the difference between a SQLAlchemy model and a Pydantic schema?"
 
-**What good looks like**: They can write JOINs, understand basic optimization.
+#### Should Know
 
-#### 4. FastAPI and Pydantic
-**What it means**: We validate data and build APIs.
+- Virtual environments
+- Basic authentication (JWT)
+- Git workflow
 
-**The hard part**:
-> "Why do I need both a model and a schema?"
+#### We'll Ask About Real Estate Stuff
 
-SQLAlchemy model = database. Pydantic schema = API. They're different layers. This confuses everyone.
+**Search**
+- Property search with 15 filters - how do you build the query?
+- "Properties within 5 miles of this location" - how do you do that?
 
-**What good looks like**: They use both correctly, understand validation.
+**Scheduling**
+- User wants to schedule a showing - what data do you store?
+- Time zones - user in EST schedules showing for agent in PST
+
+**Media**
+- Property has 20 photos - how do you handle upload?
+- Image processing (thumbnails) - sync or async?
+
+**Libraries we use**: FastAPI, SQLAlchemy 2.0 (async), Alembic, Celery + Redis, Pydantic v2, python-jose, passlib
 
 ---
 
 ## AI/Agent Intern
 
-### Must Understand
+### Technical Requirements
 
-#### 1. How LLMs Work (Conceptually)
-**What it means**: You don't need the math, but you need the concepts.
+#### Must Know
 
-**The hard part**:
+**LLM Basics**
+- What is temperature?
+- What are tokens?
+- System prompt vs user prompt
+- Few-shot prompting
+
+**The part that trips everyone up**:
 > "Why does the same prompt give different answers?"
 
-Temperature = randomness. Higher = more creative, less consistent. LLMs are stochastic, not deterministic.
+Temperature controls randomness. 0 = deterministic, 1 = very creative. LLMs are stochastic.
 
-**What good looks like**: They understand temperature, tokens, prompts.
+**Interview question**: "What's the difference between temperature 0 and 0.9? When would you use each?"
 
-#### 2. Basic Prompting
-**What it means**: How you ask matters as much as what you ask.
+**Basic Prompting**
+- Writing clear instructions
+- Providing examples
+- Prompt structure
 
-**The hard part**:
-> "Why is the model ignoring my instructions?"
+**Interview question**: "Write a prompt for a real estate agent that suggests properties based on user preferences."
 
-Prompt structure matters. System prompt sets behavior, user prompt provides input. But attention mechanism means earlier tokens sometimes get forgotten.
+**RAG Basics**
+- What are embeddings?
+- What is vector search?
+- Why would you use Pinecone instead of LIKE query?
 
-**What good looks like**: They can write effective prompts with examples.
+**The part that trips everyone up**:
+> "Why can't I just use PostgreSQL text search?"
 
-#### 3. What RAG Is
-**What it means**: Agents need knowledge beyond training.
+Semantic search vs keyword search. "House" and "home" are different words but similar meaning. Embeddings capture that.
 
-**The hard part**:
-> "Why do I need Pinecone? I can just search text."
+**Interview question**: "How would you implement RAG so an agent can answer questions about our property listings?"
 
-Semantic search vs keyword. "House" and "home" are different words but similar meaning. Embeddings capture meaning.
+**Agent Concepts**
+- Tool use
+- Sequential execution
+- Error handling
 
-**What good looks like**: They understand embeddings, vector search, chunking.
+**Interview question**: "What happens if an agent's tool call fails?"
 
-#### 4. Agent Concepts
-**What it means**: AI that takes actions, not just answers.
+#### Should Know
 
-**The hard part**:
-> "Why is the agent doing X when I asked for Y?"
+- Python (obviously)
+- Basic API consumption
+- JSON handling
 
-Agents can misinterpret, loop, or hallucinate. Need guardrails.
+#### We'll Ask About Real Estate Stuff
 
-**What good looks like**: They understand tool use, error handling, limits.
+**Property Matching**
+- User says "I want something modern but not too far from downtown" - how does the AI translate that to filters?
+
+**Conversations**
+- User has a 20-message conversation about their preferences - how does the agent remember everything without hitting context limits?
+
+**Market Analysis**
+- "What's a fair price for this house?" - how would you build this?
+
+**Libraries we use**: CrewAI, LangGraph, LangChain, OpenAI SDK, Pinecone, tiktoken
 
 ---
 
-## Real Estate Platform Context
+## Real Estate Platform - Where We'll Have Trouble
 
-Propnet.ai challenges that will affect your work:
+This is what keeps me up at night. When you're interviewing, think about these:
 
-### Frontend Challenges
+### 1. Maps Performance
+We're going to have thousands of properties. Putting all markers on a map will crash the browser.
 
-**1. Real-Time Updates**
-- Property status changes (available → under contract → sold)
-- Multiple users viewing same property
-- Chat messages
+**What we'll ask**: "How would you render 5,000 property markers on a map?"
 
-**Why it's hard**: WebSocket management. Connection state. Reconnection logic.
+**What we're looking for**: Marker clustering, viewport-based loading, virtualization
 
-**2. Maps Integration**
-- Property markers on map
-- Neighborhood boundaries
-- Distance calculations
+### 2. Real-Time Updates
+Property status changes instanty. If user A views a property and user B buys it, user A should know immediately.
 
-**Why it's hard**: Performance with many markers. Different zoom levels.
+**What we'll ask**: "How does the frontend know when a property status changes?"
 
-**3. Complex Forms**
-- Property listings (30+ fields)
-- Image uploads
-- Multi-step wizards
+**What we're looking for**: WebSocket, SSE, or polling - with trade-offs
 
-**Why it's hard**: State across steps. Validation. Performance.
+### 3. Search Performance
+15 filters plus geo queries on 100k+ properties.
 
-### Backend Challenges
+**What we'll ask**: "Design a property search endpoint with filters for price, beds, baths, sqft, and location."
 
-**1. Search & Filtering**
-- 15+ filter options
-- Geo queries (within 5 miles)
-- Sorting
+**What we're looking for**: Query building, indexing strategy, caching
 
-**Why it's hard**: Query optimization. Indexing strategies.
+### 4. Image Handling
+Properties have 20-50 photos. Upload, process, serve.
 
-**2. Real-Time Communication**
-- WebSocket connections
-- Message delivery
-- Online/offline
+**What we'll ask**: "How do you handle uploading 30 photos for a property listing?"
 
-**Why it's hard**: Connection management. Scale.
+**What we're looking for**: Async processing, background jobs, CDN
 
-**3. Scheduled Tasks**
-- Open house reminders
-- Follow-up automation
-- Price alerts
+### 5. Agent Reliability
+AI agents hallucinate. They get into loops. They timeout.
 
-**Why it's hard**: Cron reliability. Time zones.
+**What we'll ask**: "What happens when the agent keeps suggesting the same property over and over?"
 
-### AI Challenges
+**What we're looking for**: Error handling, retry logic, guardrails
 
-**1. Property Matching**
-- Preference learning
-- "I want something modern but not noisy"
-- Explainability
+### 6. Context Windows
+Conversations get long. LLM context windows have limits.
 
-**Why it's hard**: Preferences are complex. Attribution is hard.
+**What we'll ask**: "User has 50 messages of conversation history. How do you handle that?"
 
-**2. Conversation Context**
-- Remembering chat history
-- Not repeating questions
-
-**Why it's hard**: Context windows are limited.
-
-**3. Market Analysis**
-- Price predictions
-- Market trends
-- Comparable analysis
-
-**Why it's hard**: Real estate is local. Data can be sparse.
+**What we're looking for**: Summarization, truncation, retrieval
 
 ---
 
 ## Evaluation Rubric
 
-### Frontend Intern
+### Frontend
 
-| Category | Poor (1) | Fair (2) | Good (3) | Excellent (4) |
-|----------|----------|-----------|----------|---------------|
-| React Fundamentals | Can't explain state/props | Basic hooks, struggles debugging | Comfortable debugging | Deep understanding |
-| TypeScript | Uses any everywhere | Basic types | Proper typing | Advanced types |
-| CSS/Layout | Struggles basics | Simple layouts | Flexbox/Grid confident | Responsive expert |
-| Problem Solving | Needs lots of help | Some guidance | Independent | Solves complex |
-| Communication | Doesn't ask | Asks after long | Good questions | Explains thinking |
+| Area | Poor (1) | Fair (2) | Good (3) | Excellent (4) |
+|------|-----------|-----------|----------|---------------|
+| React Fundamentals | Can't explain useState/useEffect | Basic usage | Comfortable | Deep understanding |
+| TypeScript | Uses any | Basic types | Proper typing | Advanced patterns |
+| CSS | Can't center div | Basic layouts | Flexbox/Grid | Responsive expert |
+| Problem Solving | Needs constant help | Some guidance | Independent | Solves novel problems |
+| Communication | Silent | Asks after long time | Good questions | Explains thinking |
 
 **Passing**: 12+ / 20
 
-### Backend Intern
+### Backend
 
-| Category | Poor (1) | Fair (2) | Good (3) | Excellent (4) |
-|----------|----------|-----------|----------|---------------|
+| Area | Poor (1) | Fair (2) | Good (3) | Excellent (4) |
+|------|-----------|-----------|----------|---------------|
 | Python/Async | Sync only | Basic async | Comfortable | Deep understanding |
-| APIs | No REST understanding | Basic CRUD | Proper design | Advanced patterns |
-| Database | Can't JOIN | Basic queries | Optimization aware | Query expert |
-| FastAPI/Pydantic | Never used | Basic usage | Validation, DI | Custom patterns |
-| Problem Solving | Needs lots of help | Some guidance | Independent | Solves complex |
+| APIs | Can't design | Basic CRUD | Proper REST | Advanced patterns |
+| Database | Can't write JOIN | Basic queries | Optimization aware | Expert |
+| FastAPI/Pydantic | Never used | Basic usage | Validation | Custom patterns |
+| Problem Solving | Needs constant help | Some guidance | Independent | Solves novel problems |
 
 **Passing**: 12+ / 20
 
-### AI/Agent Intern
+### AI/Agent
 
-| Category | Poor (1) | Fair (2) | Good (3) | Excellent (4) |
-|----------|----------|-----------|----------|---------------|
-| LLM Concepts | No understanding | Basic prompting | Temperature, tokens | Advanced techniques |
-| RAG/Vectors | Never heard | Basic concept | Simple RAG | Vector optimization |
-| Agent Patterns | No experience | Basic tools | Sequential | Complex orchestration |
+| Area | Poor (1) | Fair (2) | Good (3) | Excellent (4) |
+|------|-----------|-----------|----------|---------------|
+| LLM Concepts | No understanding | Basic prompting | Temperature, tokens | Advanced |
+| RAG/Vectors | Never heard | Basic concept | Can implement | Expert |
+| Agent Patterns | No experience | Basic tools | Sequential | Complex |
 | Python | Weak | Basic | Comfortable | Strong |
-| Problem Solving | Needs lots of help | Some guidance | Independent | Solves complex |
+| Problem Solving | Needs constant help | Some guidance | Independent | Solves novel problems |
 
 **Passing**: 12+ / 20
 
@@ -310,17 +316,17 @@ Propnet.ai challenges that will affect your work:
 
 ## Practical Challenge
 
-### Frontend (90 minutes)
+### Frontend (90 min)
 
-Build a property listing page:
+Build property listing page:
 - Display 10 properties from mock API
-- Filter by price range (slider)
-- Sort by price/date
+- Filter by price range (min/max inputs)
+- Sort by price, date
 - Click property for details modal
-- TypeScript required
-- Basic tests
+- TypeScript
+- Basic test
 
-### Backend (90 minutes)
+### Backend (90 min)
 
 Build property API:
 - GET /properties (list with filters)
@@ -329,12 +335,12 @@ Build property API:
 - PUT /properties/{id}
 - DELETE /properties/{id}
 - Pydantic validation
-- Basic tests
+- Basic test
 
-### AI/Agent (90 minutes)
+### AI/Agent (90 min)
 
-Build a property agent:
-- Takes user query about real estate
+Build property agent:
+- Takes user query ("find me a 3BR under 500k")
 - Uses search tool to find properties
 - Returns formatted response
 - Basic prompt engineering
@@ -342,68 +348,99 @@ Build a property agent:
 
 ---
 
-## What We're Evaluating
+## What We Actually Evaluate
 
-1. **Problem solving** - Can you figure it out?
-2. **Code quality** - Is it readable?
-3. **Error handling** - Do you think about edge cases?
-4. **Communication** - Can you explain it?
-5. **Testing** - Do you care about quality?
-
-Not:
-- Knowing every syntax
-- Finishing everything
-- Perfect solution
+1. **Can you figure it out?** - Not "do you know everything"
+2. **Is your code readable?** - Not "is it clever"
+3. **Do you handle errors?** - Not "does it work in happy path"
+4. **Can you explain it?** - Not "do you have answers"
+5. **Do you test?** - Not "is it perfect"
 
 ---
 
-## What Makes Someone Succeed
+## Hardest Topics - What Actually Confuses People
 
-**The drive to understand why, not just how.**
+### Frontend
 
-- "It works" → "Why does it work?"
-- "I used useState" → "When should I use useReducer?"
-- "API failed" → "Why? How do I handle it?"
+| Topic | Why It's Hard | How to Explain |
+|-------|---------------|----------------|
+| useEffect dependencies | The array controls when effect runs. Missing something = infinite loop. Too much = performance issues. | Draw the dependency flow. Show example of adding console.log and seeing it run infinitely. |
+| Flexbox axis | justify vs align. Main vs cross. Confuses everyone. | Draw the axis. justify-content = main axis, align-items = cross axis. |
+| State sync | React Query vs Zustand vs URL. Which to use when? | Server state = React Query. Client state = Zustand. Shareable = URL. |
 
-**Asking questions at the right time.**
+### Backend
 
-- Stuck 30+ minutes? Ask.
-- Not sure? Ask.
-- Don't understand? Ask.
+| Topic | Why It's Hard | How to Explain |
+|-------|---------------|----------------|
+| Async/concurrency | Event loop is invisible. You can't see it. | Show asyncio.gather() vs sequential await. Demonstrate with timing. |
+| Query optimization | You can't see what's slow without tools. | Run EXPLAIN ANALYZE. Show difference between indexed and non-indexed. |
+| API design | Getting abstraction wrong breaks clients later. | Show examples of bad APIs. Discuss versioning. |
 
-**Taking ownership.**
+### AI
 
-- Your task = your problem to solve.
-- Drive it, don't just do it.
-
----
-
-## Hardest Topics Summary
-
-| Role | Hardest Topic | Why |
-|------|---------------|-----|
-| Frontend | useEffect dependencies | Infinite loops, stale closures |
-| Frontend | Flexbox | Axis confusion |
-| Backend | Async/concurrency | Event loop is abstract |
-| Backend | Query optimization | Can't see without tools |
-| Backend | API design | Knowing abstractions |
-| AI | LLM randomness | Non-deterministic debugging |
-| AI | RAG at scale | Embedding/retrieval issues |
-| AI | Agent reliability | Hallucination, loops |
+| Topic | Why It's Hard | How to Explain |
+|-------|---------------|----------------|
+| LLM randomness | Non-deterministic. Same prompt = different answers. | Show temperature demo. 0 vs 1. Explain "stochastic parrot." |
+| RAG quality | Is it the embedding? Chunking? Retrieval? Prompt? | Walk through each step. Show where things can break. |
+| Agent loops | Agent keeps doing same thing wrong. | Explain guardrails. Show timeout/retry logic. |
 
 ---
 
-## Apply
+## Specific Libraries You'll See in Our Code
 
-**Email**: himanshu.dixit@nexod.ai
+### Frontend
+- Next.js 14 (App Router, Server Components)
+- React Query (server state)
+- Zustand (client state)
+- Tailwind CSS
+- React Hook Form + Zod (validation)
+- @tanstack/react-table (data tables)
+- Recharts (charts)
+- Mapbox GL JS or @react-google-maps/api
+- Socket.io-client or native WebSocket
 
-Include:
-1. GitHub profile
-2. One deployed project
-3. Brief: What did you build and why?
+### Backend
+- FastAPI
+- SQLAlchemy 2.0 (async)
+- Alembic (migrations)
+- Celery + Redis (background jobs)
+- Pydantic v2
+- python-jose (JWT)
+- passlib + bcrypt
+- httpx (async HTTP)
+- asyncpg
 
-No cover letter. Code speaks.
+### AI
+- CrewAI
+- LangGraph
+- LangChain
+- OpenAI SDK
+- Pinecone
+- tiktoken (token counting)
+- sentence-transformers (embeddings)
 
 ---
 
-*Propnet.ai - Building the Future of Real Estate*
+## Questions to Ask Candidates
+
+### Frontend
+1. "Walk me through how React renders a component"
+2. "When would you use React Query vs useState?"
+3. "How would you optimize a slow React app?"
+4. "What happens when you click this button?"
+
+### Backend
+1. "What's the difference between sync and async in Python?"
+2. "How would you design an API for filtering 100k properties?"
+3. "What happens when a database query times out?"
+4. "How would you handle 50 image uploads for one property?"
+
+### AI
+1. "How would you improve a prompt that's giving bad answers?"
+2. "What's the difference between semantic and keyword search?"
+3. "How would you handle an agent that keeps looping?"
+4. "User asks 'find me a house like this one' - how does the AI understand 'like this one'?"
+
+---
+
+*Propnet.ai - Building Real Estate's Future*
