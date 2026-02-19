@@ -2,32 +2,33 @@
 
 **Owner**: Himanshu Dixit
 
-## System Overview
+## The Short Version
 
-Agent-native platform. Users define workflows, agents execute autonomously.
+Agent platform. Users define workflows, agents execute. The platform handles orchestration, state, memory, and tool execution.
 
 ## Tech Stack
 
 ### Frontend
-- **Next.js 14 App Router** - Server Components, minimal JS
-- **TypeScript strict** - Compile-time safety
-- **Tailwind CSS** - Utility-first styling
-- **Zustand + React Query** - State management
-- **Figma MCP** - Rapid prototyping pipeline
+- **Next.js 14 App Router** - Server Components mean less JS sent to client. That's the main reason.
+- **TypeScript strict** - Compile-time errors > runtime errors. Can't ship bad types.
+- **Tailwind CSS** - Utility classes. No fighting with CSS specificity.
+- **Zustand + React Query** - Zustand for UI state, React Query for server state. Simple.
+- **Figma MCP** - We prototype fast. Design to component in hours, not days.
 
 ### Backend
-- **FastAPI** - Async Python, Pydantic validation
-- **SQLAlchemy 2.0** - Async ORM
-- **Alembic** - Database migrations
-- **Celery + Redis** - Background jobs
-- **Pinecone** - Vector database
+- **FastAPI** - Async-first. Dependency injection that's actually useful. OpenAPI generated.
+- **SQLAlchemy 2.0** - Async ORM. The 2.0 rewrite cleaned up a lot of mess.
+- **Alembic** - Database migrations. Version control for schema.
+- **Celery + Redis** - Background jobs. Long-running agent tasks, notifications, webhooks.
+- **Pinecone** - Vector store. RAG for agent memory.
 
 ### Agent Framework
 
-**CrewAI** - Multi-agent orchestration
+**CrewAI** - Multi-agent orchestration. Three agents working together on one task.
+
 ```python
 researcher = Agent(
-    role='Researcher',
+    role='Research Analyst',
     goal='Gather accurate information',
     tools=[search_tool, browse_tool],
     memory=True
@@ -36,14 +37,14 @@ researcher = Agent(
 crew = Crew(
     agents=[researcher, analyst, writer],
     tasks=[research_task, analyze_task, write_task],
-    process=Process.sequential,
-    memory=True
+    process=Process.sequential
 )
 
 result = crew.kickoff(inputs={'topic': 'AI trends'})
 ```
 
-**LangGraph** - State machines for complex flows
+**LangGraph** - State machines. When you need conditional logic, human checkpoints, and resume-on-fail.
+
 ```python
 from langgraph.graph import StateGraph, END
 
@@ -54,13 +55,9 @@ class WorkflowState(TypedDict):
     output: str
 
 workflow = StateGraph(WorkflowState)
-
-# Nodes
 workflow.add_node("research", research_node)
 workflow.add_node("human_approval", approval_node)
 workflow.add_node("generate", generate_node)
-
-# Edges
 workflow.add_edge("research", "human_approval")
 workflow.add_conditional_edges(
     "human_approval",
@@ -70,38 +67,30 @@ workflow.add_conditional_edges(
 app = workflow.compile()
 ```
 
-**Vector Store (Pinecone)**
-```python
-# RAG for agents
-index = pc.Index("knowledge-base")
+**Vector Store (Pinecone)** - RAG. Agents need context beyond their training.
 
-# Store embeddings
+```python
+index = pc.Index("knowledge-base")
 index.upsert(vectors=[{
     "id": doc_id,
     "values": embedding,
     "metadata": {"source": "documentation"}
 }])
-
-# Query
-results = index.query(
-    vector=query_embedding,
-    top_k=5,
-    filter={"source": {"$eq": "documentation"}}
-)
+results = index.query(vector=query_embedding, top_k=5)
 ```
 
-## Architecture Decisions
+## Why These Decisions
 
-| Decision | Rationale |
+| Decision | Reasoning |
 |----------|-----------|
-| FastAPI over Django | Async for agents, lighter weight |
-| Next.js 14 App Router | Server Components, edge rendering |
-| CrewAI + LangGraph | Different agent patterns needed |
-| PostgreSQL | ACID, JSONB for agent state |
-| Pinecone | Managed vector ops, scales |
-| Clerk | Best auth DX, webhooks |
+| FastAPI over Django | Async is built-in, not bolted on. Don't need Django's ORM since we have SQLAlchemy. |
+| Next.js 14 App Router | Server Components cut bundle size significantly. RSC is the future of React. |
+| CrewAI + LangGraph | They solve different problems. Use the right tool. |
+| PostgreSQL | ACID compliance matters. Agent runs, billing, user data - all transactional. JSONB when we need flexibility. |
+| Pinecone | Managed service. Don't want to deal with vector DB ops. |
+| Clerk | Best auth DX. Pre-built components. Webhook sync keeps our DB honest. |
 
-## Data Flow
+## How Data Flows
 
 ```
 User Request
@@ -111,7 +100,7 @@ Vercel Edge (Next.js)
 API Route → FastAPI
     ↓
 Agent Orchestrator
-    ├─→ CrewAI (multi-agent)
+    ├─→ CrewAI (multi-agent crew)
     ├─→ LangGraph (state machine)
     └─→ Direct LLM call
     ↓
@@ -124,117 +113,99 @@ Response
 
 ## Database Schema
 
-### Core Tables
-```sql
--- Users (via Clerk webhook)
-users (
-    id uuid primary key,
-    email text unique,
-    created_at timestamp
-)
+Core tables. We're building incrementally.
 
+```sql
 -- Workspaces (multi-tenant)
 workspaces (
     id uuid primary key,
     name text,
-    owner_id uuid references users(id)
+    slug text unique,
+    settings jsonb,
+    created_at timestamptz
 )
 
--- Agent Sessions
-agent_sessions (
+-- Users (synced from Clerk)
+users (
+    id uuid primary key,
+    email text unique,
+    workspace_id uuid references workspaces(id),
+    role text default 'member'
+)
+
+-- Agents
+agents (
     id uuid primary key,
     workspace_id uuid references workspaces(id),
-    agent_type text,
-    status text,
-    state jsonb,  -- LangGraph checkpoint
-    created_at timestamp
+    name text,
+    type text,  -- 'crew', 'graph', 'direct'
+    config jsonb,
+    tools text[],
+    created_by uuid references users(id)
 )
 
--- Agent Logs
-agent_logs (
+-- Agent Runs
+agent_runs (
     id uuid primary key,
-    session_id uuid references agent_sessions(id),
-    step text,
-    output text,
-    timestamp timestamp
-)
-
--- Vector Metadata
-vector_metadata (
-    id text primary key,  -- Pinecone ID
+    agent_id uuid references agents(id),
     workspace_id uuid,
-    content_type text,
-    source text,
-    created_at timestamp
+    status text,  -- 'pending', 'running', 'completed', 'failed'
+    inputs jsonb,
+    outputs jsonb,
+    started_at timestamptz,
+    completed_at timestamptz
 )
 ```
 
 ## Performance Targets
 
-| Metric | Target | P95 |
-|--------|--------|-----|
-| API Response | <100ms | <300ms |
-| Agent Step | <2s | <5s |
-| Full Workflow | <10s | <30s |
-| DB Query | <50ms | <100ms |
-| Vector Search | <100ms | <200ms |
+What we're aiming for. We'll measure, adjust.
 
-## Scalability Considerations
+| Metric | Target | Alert At |
+|--------|--------|----------|
+| API Response | <100ms | >300ms |
+| Agent Step | <2s | >5s |
+| Full Workflow | <10s | >30s |
+| DB Query | <50ms | >100ms |
+| Vector Search | <100ms | >200ms |
+
+## Scaling Strategy
 
 **Horizontal**:
 - Stateless FastAPI containers
 - Redis for shared state
-- PostgreSQL read replicas
+- PostgreSQL read replicas when we need them
 
 **Vertical**:
 - Async everywhere
-- Connection pooling
-- Query optimization
-- Caching layers
+- Connection pooling (PgBouncer)
+- Query optimization before caching
+- Redis cache for expensive operations
 
-**Agent Specific**:
-- Step checkpointing (resume on failure)
-- Parallel agent execution
-- Rate limiting per workspace
-- Queue-based execution
+**Agent-Specific**:
+- LangGraph checkpointing - resume on failure
+- Celery queue - don't block HTTP requests
+- Per-workspace rate limiting - one bad actor doesn't kill everyone
+- Streaming responses - users see progress
 
 ## Security
 
-- Row-level security in PostgreSQL
-- Clerk JWT verification
-- API rate limiting
-- Input validation (Pydantic)
-- No secrets in code
+Basic stuff. We're not special targets but we're not stupid either.
+
+- Row-level security - workspace isolation
+- Clerk JWT - verify every request
+- API rate limiting - 100 req/min per user
+- Input validation - Pydantic, Zod
+- No secrets in code - env vars only
 
 ## Monitoring
 
-- Sentry: Errors, performance
-- Prometheus: Custom metrics
-- Py-spy: Profiling
-- Structured logging
+What we watch:
 
-## Roadmap
-
-**Phase 1**: Foundation
-- Auth, basic CRUD
-- Agent hello-world
-- Dev environment
-
-**Phase 2**: AI Core
-- CrewAI integration
-- LangGraph workflows
-- Vector search
-
-**Phase 3**: Scale
-- Performance optimization
-- Advanced patterns
-- Production hardening
-
-## Open Questions
-
-1. PWA vs React Native for mobile?
-2. On-premise deployment strategy?
-3. Multi-region data residency?
+- **Sentry** - Errors, performance traces
+- **Prometheus** - Custom metrics (agent runs, API latency)
+- **Py-spy** - When something's slow, profile it
+- **Structured logs** - JSON, searchable, correlated
 
 ---
 

@@ -1,111 +1,90 @@
 # Infrastructure
 
-**Owner**: DevOps Intern + Himanshu Dixit
+**Owner**: DevOps + Himanshu
 
-## Environments
+## Two Environments
 
-### Development: Supabase
-```
-Database: PostgreSQL 15
-Auth: Built-in (dev only)
-Real-time: Enabled (for agent events)
-Storage: 500MB
-```
+### Dev: Supabase
+- PostgreSQL 15
+- Built-in auth (only for dev)
+- Real-time subscriptions (useful for agent events)
+- Free tier
 
-**Use**: Local dev, agent testing, intern onboarding
+**When to use**: Local dev, testing, intern onboarding.
 
-### Production: AWS
-```
-Database: RDS PostgreSQL 15 (Multi-AZ)
-Compute: ECS Fargate
-Storage: S3 + CloudFront
-Cache: ElastiCache Redis
-Vector: Pinecone
-```
+### Prod: AWS
+- RDS PostgreSQL 15 (Multi-AZ)
+- ECS Fargate (containers)
+- S3 + CloudFront (assets)
+- ElastiCache Redis
+- Pinecone (vectors)
+
+**When to use**: Production. Obviously.
 
 ## Agent Stack
 
 ### CrewAI
-**Use**: Multi-agent workflows
+Multi-agent orchestration.
 - Research crew: Researcher → Analyst → Writer
 - Review crew: Auditor → Validator
 
-**State**: PostgreSQL via crewai-tools
+State stored in PostgreSQL via crewai-tools.
 
 ### LangGraph
-**Use**: State machines, human-in-the-loop
+State machines with human-in-the-loop.
 - Complex approval workflows
 - Conditional branching
-- State persistence in PostgreSQL
-
-**Checkpoint**: Redis for fast state recovery
+- Checkpointing in PostgreSQL, Redis for fast recovery
 
 ### Pinecone
-**Use**: Vector store for RAG
+Vector store for RAG.
 - Document embeddings
 - Agent memory
 - Semantic search
 
-```python
-# Pinecone setup
-from pinecone import Pinecone
-pc = Pinecone(api_key=settings.PINECONE_API_KEY)
-index = pc.Index("nexod-knowledge")
-```
-
 ## Hosting
 
 ### Frontend: Vercel
-```
-Production: https://app.nexod.ai
-Staging: https://staging.nexod.ai
-Preview: Every PR
-```
-
-**Why**: Next.js optimization, edge network, automatic HTTPS
+- and staging
+- Preview URLs for every PR
+- Zero-config. Git push Production, it deploys.
 
 ### Backend: AWS ECS Fargate
-```
-Production: 2-10 tasks
-Staging: 1 task (t3.medium)
-```
-
-**Why**: Long-running agents (30s+), WebSockets, auto-scaling
+- Containers, no servers to manage
+- Auto-scaling
+- Why not serverless functions? Agent tasks run long. 30s+ timeouts kill us.
 
 ## Database
 
 ### Production (RDS)
-```yaml
-Instance: db.r6g.large
-Storage: 100GB GP3
-Multi-AZ: Yes
-Backups: 7 days
-Encryption: Yes
-```
+- db.r6g.large to start
+- Multi-AZ
+- Automated backups
+- 7-day retention
 
-**Agent Tables**:
-- `agent_sessions`: Active agent runs
-- `agent_logs`: Execution logs
-- `vector_metadata`: Pinecone metadata
-
-### Development (Supabase)
-**Why**: Instant setup, real-time for agent events, free tier
+### Dev (Supabase)
+- Free tier is fine
+- Instant setup for new people
 
 ## Auth: Clerk
-```javascript
-// Frontend
-import { ClerkProvider } from '@clerk/nextjs'
 
-// Backend
+Frontend:
+```javascript
+import { ClerkProvider } from '@clerk/nextjs'
+```
+
+Backend:
+```python
 from clerk_backend_api import Clerk
 clerk = Clerk(bearer_auth=settings.CLERK_SECRET_KEY)
 ```
 
-**Features**: OAuth, MFA, webhooks for agent permissions
+OAuth, MFA, webhooks. Best DX.
 
 ## Monitoring
 
 ### Sentry
+Errors and performance traces.
 ```python
 sentry_sdk.init(
     dsn=settings.SENTRY_DSN,
@@ -113,87 +92,62 @@ sentry_sdk.init(
 )
 ```
 
-**Alerts**:
-- >10 errors/5min → Google Chat
-- Agent failures → Immediate alert
-- Performance regression → Chat
-
 ### Py-spy
+When something's slow.
 ```bash
 py-spy top --pid <pid>
 py-spy record -o profile.svg --pid <pid>
 ```
 
-**Use**: Agent performance, API latency >500ms
-
 ### Prometheus + Grafana
-**Metrics**: Agent execution time, API latency, DB queries
+Custom metrics. Agent execution time, API latency.
 
 ## Caching
 
 ### Redis Layers
 
-**L1: Sessions**
+**Sessions**:
 ```python
 redis.setex(f"session:{user_id}", 3600, session_data)
 ```
 
-**L2: Agent State**
+**Agent State**:
 ```python
 redis.setex(f"agent:{agent_id}:state", 300, state_json)
 ```
 
-**L3: API Responses**
+**API Responses**:
 ```python
 @cache_for(seconds=60)
 def get_agent_results(agent_id):
     return db.query(...)
 ```
 
-## Session Management
-
-**Backend**: Redis  
-**Frontend**: Zustand + React Query  
-**Agent State**: LangGraph checkpointing (PostgreSQL + Redis)
-
 ## Latency Targets
 
 | Metric | Target | Alert |
 |--------|--------|-------|
 | API p95 | <300ms | >500ms |
-| Agent response | <5s | >10s |
-| Database | <50ms | >100ms |
-| Vector search | <100ms | >200ms |
+| Agent step | <5s | >10s |
+| DB | <50ms | >100ms |
+| Vector | <100ms | >200ms |
 
 ## CI/CD
 
+GitHub Actions. Test → Staging → Production.
+
 ```yaml
-name: Deploy
-on: [push]
+test:
+  - pytest
+  - npm test
 
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - run: cd backend && pytest
-      - run: cd frontend && npm test
-  
-  deploy-staging:
-    needs: test
-    if: github.ref == 'refs/heads/develop'
-    run: aws ecs update-service --cluster staging --service api
-  
-  deploy-production:
-    needs: test
-    if: github.ref == 'refs/heads/main'
-    run: aws ecs update-service --cluster production --service api
+deploy-staging:
+  if: branch = develop
+
+deploy-production:
+  if: branch = main
 ```
-
-## Setup
-
-See [SETUP.md](./SETUP.md)
 
 ---
 
-Questions: himanshu.dixit@nexod.ai
+himanshu.dixit@nexod.ai

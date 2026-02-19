@@ -1,38 +1,55 @@
-# AI Usage Policy
+# AI Usage
 
 **Owner**: Himanshu Dixit  
-**Applies to**: All team members
+**Applies to**: All engineers
 
-## Rule
+## The Rule
 
-AI-assisted, human-approved.
+AI-assisted, human-approved. You're responsible for everything that ships.
 
-## Approved Tools
+## What We Use
 
-| Tool | Use |
-|------|-----|
-| GitHub Copilot | Code completion |
-| ChatGPT/Claude | Architecture, debugging |
-| Cursor | AI IDE |
+- **GitHub Copilot** - Code completion, boilerplate
+- **ChatGPT/Claude** - Architecture discussions, debugging
+- **Cursor** - AI-powered IDE (optional)
 
-## Allowed
+## When AI Helps
 
 - Boilerplate code
 - Regex patterns
 - SQL optimization
 - Documentation drafts
 - Test generation
-- Debugging help
+- Debugging assistance
 
-## Not Allowed
+## When AI Doesn't Help
 
 - Copy-paste without understanding
-- AI code in production without review
+- Shipping AI code without review
 - Security-critical code (auth, crypto)
-- Commit messages without context
-- Bypassing learning (interns)
+- Bypassing learning
+
+## Interns
+
+**Month 1**: Learn fundamentals. Minimize AI.  
+**Month 2**: Use AI for boilerplate. Explain what it does.  
+**Month 3+**: Normal usage. You know the trade-offs.
+
+## Security
+
+**Don't**:
+- Paste proprietary code into public AI tools
+- Share secrets with AI
+- trust AI-generated security code blindly
+
+**Do**:
+- Review everything AI suggests
+- Run security scanners
+- Get senior review for auth/crypto code
 
 ## Labeling
+
+When you use AI, note it:
 
 ```python
 # Generated with Copilot, reviewed by: Himanshu
@@ -40,7 +57,7 @@ def helper():
     pass
 ```
 
-**PR description**:
+In PR description:
 ```
 AI Usage:
 - Copilot: helper functions
@@ -48,30 +65,6 @@ AI Usage:
 - All reviewed manually
 ```
 
-## Intern Rules
-
-- Week 1-4: Minimize AI, learn fundamentals
-- Week 5-8: AI for boilerplate, explain generated code
-- Week 9-12: Normal usage
-
-## Security
-
-**Never**:
-- Paste proprietary code into public AI
-- Share secrets with AI
-- Trust AI security code
-
-**Always**:
-- Review AI suggestions
-- Run security scanners
-- Senior review for security code
-
-## Violations
-
-1st: Warning + training  
-2nd: Restricted AI access  
-3rd: Termination
-
 ---
 
-Questions: himanshu.dixit@nexod.ai
+himanshu.dixit@nexod.ai

@@ -1,167 +1,42 @@
-# Company Policies
+# Practical Guidelines
 
-**Owner**: Himanshu Dixit  
-**Effective**: Feb 2026
+**Owner**: Himanshu Dixit
 
-## Communication Policy
+## Communication
 
-### Tools
-- **Gmail**: Official communication, external
-- **Google Chat**: Daily chat, quick questions
-- **Google Drive**: All documentation
-- **Trello**: Task management
-- **GitHub**: Code
-- **Figma**: Design
+- **Google Chat** - Day-to-day. Respond within 4 hours.
+- **Gmail** - External, important. Respond within 24 hours.
+- **Google Drive** - All docs live here.
+- **Trello** - Tasks. Update your cards.
 
-### Response Times
-- Google Chat: 4 hours (business hours)
-- Gmail: 24 hours
-- Trello: Update daily
+## Hours
 
-### Meeting Policy
-- Daily standup: 15 min max
-- No meetings without agenda
-- Record with Loom when possible
-
-## Remote Work Policy
-
-### Hours
-- Core hours: 10am-4pm EST
-- Flexible outside core
-- Daily standup 10am mandatory
-
-### Availability
-- Google Chat status updated
-- Respond to mentions within 4 hours
-- Weekly 1:1s with mentor
+- **Core hours**: 10am-4pm EST
+- **Standup**: Daily 10am. 15 minutes max.
+- **Flexible** outside core hours.
 
 ## Code of Conduct
 
-### Expected
-- Respectful communication
-- Constructive feedback
-- Help teammates
-- Meet commitments
+- Be respectful
+- Give constructive feedback
+- Help each other
+- Don't share secrets
 
-### Not Tolerated
-- Harassment
-- Discrimination
-- Plagiarism
-- Sharing confidential info
+## Security Basics
 
-## Security Policy
+- MFA everywhere
+- Password manager
+- No prod data locally
+- Lock your machine
 
-### Passwords
-- Unique per service
-- 12+ characters
-- Use password manager
-- MFA enabled
+## What If Something Goes Wrong
 
-### Data
-- Encrypt sensitive files
-- No prod data on local
-- Lock computer when away
-- Report breaches immediately
+**Security issue**: Report immediately to himanshu.dixit@nexod.ai
 
-### Access
-- Least privilege
-- Regular access reviews
-- Offboard within 24 hours
+**Something broke**: Post in #engineering, tag relevant people.
 
-## Confidentiality
-
-### Internal
-- Architecture docs
-- Roadmaps
-- Financial info
-
-### Confidential
-- Customer data
-- API keys
-- Credentials
-
-### Public
-- Marketing site
-- OSS code
-
-## Incident Reporting
-
-### Security Incident
-1. Report immediately to himanshu.dixit@nexod.ai
-2. Don't delete evidence
-3. Document timeline
-4. Cooperate with investigation
-
-### Harassment
-1. Report to himanshu.dixit@nexod.ai
-2. Confidential investigation
-3. No retaliation
-
-## IP and Ownership
-
-### Work Product
-- Company owns all work
-- Open source requires approval
-- Personal projects on personal time
-
-### Open Source
-- MIT license for public code
-- No proprietary code in OSS
-- Review before publishing
-
-## Time Off
-
-### Interns
-- Flexible within reason
-- Notify 1 week in advance
-- Max 2 consecutive days
-
-### Sick Leave
-- Notify via Google Chat
-- No doctor's note required (<3 days)
-- Health first
-
-## Performance
-
-### Reviews
-- Week 4: Check-in
-- Week 8: Mid-term
-- Week 12: Final
-
-### Metrics
-- Code quality
-- On-time delivery
-- Communication
-- Learning speed
-
-## Equipment
-
-### Provided
-- MacBook Pro (or equivalent)
-- Monitor (if requested)
-- Software licenses
-
-### Care
-- Return when leaving
-- Report damage immediately
-- No personal software without approval
-
-## Termination
-
-### Voluntary
-- 2 weeks notice
-- Handoff documentation
-- Exit interview
-
-### Involuntary
-- Immediate access removal
-- Return equipment
-- Final pay per law
-
-## Questions
-
-Email: himanshu.dixit@nexod.ai
+**Need help**: Ask. After 30 min stuck, ask.
 
 ---
 
-Last updated: Feb 2026
+himanshu.dixit@nexod.ai

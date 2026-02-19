@@ -2,54 +2,32 @@
 
 **Enforced by**: CI/CD, code review
 
-## Code Quality Gates
+## Code Quality
 
-- [ ] Type checking (mypy, TypeScript strict)
-- [ ] Linting (ruff, ESLint)
-- [ ] Formatting (black, prettier)
-- [ ] Tests 80%+ coverage
-- [ ] Security scan
-- [ ] No secrets
+These are non-negotiable:
+
+- **Type checking** - mypy, TypeScript strict. No "any".
+- **Linting** - ruff, ESLint. Pass before merge.
+- **Formatting** - black, prettier. Don't argue.
+- **Tests** - 80% coverage minimum. No exceptions.
+- **Secrets** - Never in code. Env vars only.
 
 ## Backend
 
-### FastAPI Structure
+### Structure
 ```
 app/
 ├── main.py              # App factory
-├── config.py            # Settings
-├── dependencies.py      # DI
-├── database.py          # DB connection
-├── models/              # SQLAlchemy
-├── schemas/             # Pydantic
-├── routers/             # API routes
-├── services/            # Business logic
-├── agents/              # CrewAI, LangGraph
-├── tasks/               # Celery
+├── config.py           # Settings
+├── dependencies.py      # DI container
+├── database.py         # DB connection
+├── models/             # SQLAlchemy
+├── schemas/            # Pydantic
+├── routers/           # API routes
+├── services/           # Business logic
+├── agents/             # CrewAI, LangGraph
+├── tasks/              # Celery
 └── tests/
-```
-
-### Agent Pattern
-```python
-# agents/research_crew.py
-from crewai import Agent, Task, Crew
-
-researcher = Agent(
-    role='Researcher',
-    goal='Find accurate information',
-    backstory='Expert researcher with 10 years experience',
-    tools=[search_tool],
-    verbose=True
-)
-
-task = Task(
-    description='Research {topic}',
-    expected_output='3-paragraph summary',
-    agent=researcher
-)
-
-crew = Crew(agents=[researcher], tasks=[task])
-result = crew.kickoff(inputs={'topic': 'AI agents'})
 ```
 
 ### Type Hints
@@ -61,6 +39,19 @@ def process_agent_result(result: AgentResult) -> dict[str, Any]:
 # Bad
 def process_agent_result(result):
     return result.to_dict()
+```
+
+### Agent Pattern
+```python
+researcher = Agent(
+    role='Researcher',
+    goal='Find accurate information',
+    tools=[search_tool],
+    memory=True
+)
+
+crew = Crew(agents=[researcher], tasks=[task])
+result = crew.kickoff(inputs={'topic': 'AI agents'})
 ```
 
 ### Error Handling
@@ -85,8 +76,8 @@ app/
 ├── page.tsx
 ├── components/
 │   ├── ui/              # Button, Input
-│   ├── features/        # AgentConsole
-│   └── agents/          # Agent-specific UI
+│   ├── features/       # AgentConsole
+│   └── agents/          # Agent-specific
 ├── hooks/
 ├── stores/
 └── lib/
@@ -94,62 +85,21 @@ app/
 
 ### Component Pattern
 ```typescript
-// components/agents/AgentConsole.tsx
-'use client'
-
-import { useQuery } from '@tanstack/react-query'
-
-interface AgentConsoleProps {
-  agentId: string
-}
-
-export function AgentConsole({ agentId }: AgentConsoleProps) {
+export function AgentConsole({ agentId }: { agentId: string }) {
   const { data, isLoading } = useQuery({
     queryKey: ['agent', agentId],
     queryFn: () => fetchAgentStatus(agentId),
   })
   
-  if (isLoading) return <AgentSkeleton />
+  if (isLoading) return <Skeleton />
   
-  return (
-    <div className="space-y-4">
-      <AgentStatus status={data?.status} />
-      <AgentLogs logs={data?.logs} />
-    </div>
-  )
+  return <div>{data?.status}</div>
 }
 ```
 
-### Reusable Components
+### State
 
-**Button**:
-```typescript
-interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'danger'
-  isLoading?: boolean
-}
-
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ variant = 'primary', isLoading, children, ...props }, ref) => (
-    <button
-      ref={ref}
-      className={cn(
-        'rounded font-medium',
-        variant === 'primary' && 'bg-blue-600 text-white',
-        'disabled:opacity-50'
-      )}
-      disabled={isLoading || props.disabled}
-      {...props}
-    >
-      {isLoading ? <Spinner /> : children}
-    </button>
-  )
-)
-```
-
-### State Management
-
-**Server State**:
+**Server** - React Query:
 ```typescript
 const { data } = useQuery({
   queryKey: ['agents'],
@@ -158,7 +108,7 @@ const { data } = useQuery({
 })
 ```
 
-**Client State**:
+**Client** - Zustand:
 ```typescript
 const useAgentStore = create<AgentState>((set) => ({
   selectedAgent: null,
@@ -166,55 +116,27 @@ const useAgentStore = create<AgentState>((set) => ({
 }))
 ```
 
-## Agents
+## Git
 
-### CrewAI Pattern
-```python
-# Define agents with clear roles
-crew = Crew(
-    agents=[researcher, writer, reviewer],
-    tasks=[research_task, write_task, review_task],
-    process=Process.sequential,
-    memory=True,  # Enable memory
-    cache=True    # Cache results
-)
-```
-
-### LangGraph Pattern
-```python
-from langgraph.graph import StateGraph
-
-# Define state
-class AgentState(TypedDict):
-    messages: list
-    next_step: str
-
-# Build graph
-workflow = StateGraph(AgentState)
-workflow.add_node("research", research_node)
-workflow.add_node("write", write_node)
-workflow.add_conditional_edges("research", decide_next)
-workflow.add_edge("write", END)
-
-app = workflow.compile()
-```
-
-## Git Workflow
-
-**Branches**:
+### Branch Naming
 ```
 feature/agent-workflow
-bugfix/auth-redirect
-hotfix/security
+bugfix/login-redirect
+hotfix/security-patch
 ```
 
-**Commits**:
+### Commits
 ```
 feat: add research agent
-crew: implement multi-agent workflow
-fix: agent timeout issue
+fix: agent timeout handling
 docs: update agent API
 ```
+
+### PRs
+- Link Trello card
+- Include screenshots for UI
+- Tests pass
+- No merge conflicts
 
 ## Performance
 
@@ -222,24 +144,20 @@ docs: update agent API
 - API <200ms (p95)
 - Agent <5s response
 - DB queries <50ms
-- Cache expensive operations
 
 **Frontend**:
-- FCP <1.8s
-- LCP <2.5s
 - Bundle <200KB
 - Lazy load routes
+- Measure, don't guess
 
 ## Security
 
-- [ ] No secrets in code
-- [ ] Input validation (Pydantic/Zod)
-- [ ] SQL injection prevention
-- [ ] XSS prevention
-- [ ] Rate limiting
-- [ ] HTTPS only
-- [ ] Secure cookies
+- Input validation (Pydantic, Zod)
+- SQL injection - use ORM, not raw strings
+- XSS - React escapes by default
+- Rate limiting - 100 req/min
+- HTTPS - always
 
 ---
 
-Questions: #engineering in Google Chat
+himanshu.dixit@nexod.ai
