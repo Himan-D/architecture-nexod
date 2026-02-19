@@ -141,9 +141,9 @@ Build React dashboard with:
 ## Compensation
 
 - Stipend: Competitive
-- Equipment: MacBook Pro
-- Learning: $500 budget
-- Conversion: Top 20% get offers
+- Equipment: Provided
+- Learning: Course access
+- Conversion: Top performers get offers
 
 ## Apply
 

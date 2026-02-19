@@ -45,7 +45,7 @@
 - Report to: Himanshu
 - CI/CD, infrastructure
 - Monitoring setup
-- Cost optimization
+- Performance optimization
 
 **Requirements**: Ship weekly, ask after 30 min stuck, document learning
 

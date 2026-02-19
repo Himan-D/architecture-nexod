@@ -110,7 +110,7 @@ Sentry.init({
 
 ## Prometheus + Grafana
 
-**Why Self-Hosted**: Sentry performance monitoring gets expensive ($0.00025/transaction). At 1M requests/day = $7,500/month. Prometheus costs $150/month on EC2.
+**Why Self-Hosted**: Better control over data, customizable metrics, works well with our existing infrastructure.
 
 ### Setup
 
@@ -466,18 +466,6 @@ groups:
 3. Increase connection pool size
 4. Check for long-running queries
 5. Add connection timeout
-
-## Costs
-
-| Service | Monthly Cost | Notes |
-|---------|-------------|-------|
-| Sentry Cloud (10k errors) | $26 | Start here |
-| Sentry Cloud (100k errors) | $80 | Scale up as needed |
-| Prometheus + Grafana (self-hosted) | $150 | EC2 t3.medium |
-| CloudWatch (AWS native) | $200+ | More expensive, skip initially |
-| Datadog | $1000+ | Too expensive for now |
-
-**Recommendation**: Start with Sentry Cloud for errors, self-host Prometheus for metrics. Move to self-hosted Sentry if error volume > 100k/month.
 
 ## On-Call Rotation
 

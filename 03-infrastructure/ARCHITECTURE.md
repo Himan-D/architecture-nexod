@@ -10,7 +10,6 @@ Database: PostgreSQL 15
 Auth: Built-in (dev only)
 Real-time: Enabled (for agent events)
 Storage: 500MB
-Cost: $0
 ```
 
 **Use**: Local dev, agent testing, intern onboarding
@@ -22,7 +21,6 @@ Compute: ECS Fargate
 Storage: S3 + CloudFront
 Cache: ElastiCache Redis
 Vector: Pinecone
-Cost: ~$1,650/month
 ```
 
 ## Agent Stack
@@ -72,7 +70,7 @@ Production: 2-10 tasks
 Staging: 1 task (t3.medium)
 ```
 
-**Why**: Long-running agents (30s+), WebSockets, cost control
+**Why**: Long-running agents (30s+), WebSockets, auto-scaling
 
 ## Database
 
@@ -129,7 +127,6 @@ py-spy record -o profile.svg --pid <pid>
 **Use**: Agent performance, API latency >500ms
 
 ### Prometheus + Grafana
-**Self-hosted**: $80/month  
 **Metrics**: Agent execution time, API latency, DB queries
 
 ## Caching
@@ -192,21 +189,6 @@ jobs:
     if: github.ref == 'refs/heads/main'
     run: aws ecs update-service --cluster production --service api
 ```
-
-## Costs
-
-| Service | Monthly |
-|---------|---------|
-| Supabase | $0 |
-| Vercel Pro | $20 |
-| AWS ECS (staging) | $150 |
-| AWS ECS (prod) | $800 |
-| RDS PostgreSQL | $350 |
-| ElastiCache | $200 |
-| Pinecone | $70 |
-| S3 + CloudFront | $100 |
-| Sentry | $26 |
-| **Total** | **~$1,716** |
 
 ## Setup
 

@@ -27,7 +27,7 @@ Multi-tenant SaaS platform with AI agents, workflow automation, and real-time co
 | Vector | Pinecone | Embeddings, RAG |
 | Auth | Clerk | User management |
 | Cache | Redis | Sessions, rate limiting |
-| Hosting | Vercel (FE), AWS ECS (BE) | Scale, cost |
+| Hosting | Vercel (FE), AWS ECS (BE) | Scale, performance |
 | Monitor | Sentry, Py-spy, Prometheus | Observability |
 
 ## Team Structure
