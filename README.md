@@ -1,97 +1,60 @@
-# Nexod Platform Architecture
+# Nexod Engineering
 
 **Repository**: https://github.com/Himan-D/architecture-nexod  
-**Owner**: Himanshu Dixit (himanshu.dixit@nexod.ai)  
-**Last Updated**: Feb 2026
+**Lead**: Himanshu Dixit (himanshu.dixit@nexod.ai)  
+**Focus**: Agent-native platform engineering
 
 ## What We Build
 
-Multi-tenant SaaS platform with AI agents, workflow automation, and real-time collaboration. Core differentiator: autonomous agents that execute complex workflows.
+Autonomous agent platform. Multi-tenant SaaS where AI agents execute complex workflows end-to-end.
 
-## Quick Links
+**Core**: CrewAI orchestration + LangGraph state machines + Real-time collaboration
 
-- [Core Architecture](./01-core/)
-- [Team Structure](./02-team/)
-- [Infrastructure](./03-infrastructure/)
-- [Development](./04-development/)
-- [Policies](./05-policies/)
+## Stack
 
-## Tech Stack
+| Layer | Tech | Purpose |
+|-------|------|---------|
+| Frontend | Next.js 14, TypeScript, Tailwind | App, rapid prototyping |
+| Backend | FastAPI, Python 3.11 | APIs, async agents |
+| Agents | CrewAI, LangGraph | Multi-agent workflows |
+| Vector | Pinecone | RAG, memory |
+| DB | PostgreSQL | Primary data |
+| Cache | Redis | Sessions, state |
+| Auth | Clerk | Identity |
+| Host | Vercel (FE), AWS ECS (BE) | Scale |
+| Monitor | Sentry, Py-spy | Observability |
 
-| Layer | Technology | Purpose |
-|-------|-----------|---------|
-| Frontend | Next.js 14, TypeScript, Tailwind | Web app, rapid prototyping |
-| Backend | FastAPI, Python 3.11 | APIs, async processing |
-| Agents | CrewAI, LangGraph | Autonomous workflows |
-| Database | PostgreSQL (Prod), Supabase (Dev) | Primary data |
-| Vector | Pinecone | Embeddings, RAG |
-| Auth | Clerk | User management |
-| Cache | Redis | Sessions, rate limiting |
-| Hosting | Vercel (FE), AWS ECS (BE) | Scale, performance |
-| Monitor | Sentry, Py-spy, Prometheus | Observability |
+## Engineering Principles
 
-## Team Structure
+1. **Agent-first architecture** - Design for autonomous workflows
+2. **Type safety everywhere** - Pydantic, TypeScript strict
+3. **Observability by default** - Metrics, traces, logs
+4. **Performance budgets** - <300ms API, <5s agent response
+5. **Test coverage >80%** - No exceptions
 
-**Layer 1 - Leadership (2)**
-- Himanshu Dixit: Architecture, backend, agents
-- Senior Frontend Lead: Frontend, design system, Figma MCP
+## Documentation
 
-**Layer 2 - Core Team (5)**
-- 2 Backend Interns: APIs, database, agent integration
-- 2 Frontend Interns: UI, components, rapid prototyping
-- 1 DevOps Intern: Infrastructure, CI/CD, monitoring
+- [Core Architecture](./01-core/) - System design, decisions
+- [Team Structure](./02-team/) - Roles, responsibilities
+- [Infrastructure](./03-infrastructure/) - DevOps, monitoring
+- [Development](./04-development/) - Patterns, standards
+- [Policies](./05-policies/) - Engineering guidelines
 
-## Communication Stack
+## Communication
 
-| Tool | Purpose |
-|------|---------|
-| **Gmail** | Official, external comms |
-| **Google Chat** | Daily chat, quick questions |
-| **Google Drive** | All documentation, RFCs |
-| **Trello** | Task management, sprints |
-| **GitHub** | Code, issues, PRs |
-| **Figma** | Design, rapid prototyping |
-| **Loom** | Async video explanations |
+- **Google Chat** - Engineering discussions
+- **Google Drive** - Architecture docs, RFCs
+- **Trello** - Sprint planning
+- **GitHub** - Code, reviews
+- **Figma** - Design system, MCP workflows
 
-## Database Strategy
+## Quick Start
 
-**Production**: AWS RDS PostgreSQL
-- Multi-AZ, automated backups, read replicas
-- CrewAI state persistence
-- LangGraph checkpointing
-
-**Development**: Supabase
-- Zero-config, free tier
-- Real-time subscriptions for agent events
-- Instant intern onboarding
-
-## Agent Architecture
-
-**CrewAI**: Multi-agent orchestration
-- Research agents
-- Execution agents  
-- Review agents
-
-**LangGraph**: State machines for complex flows
-- Conditional edges
-- Human-in-the-loop
-- State persistence
-
-**Vector Store**: Pinecone
-- RAG for agents
-- Long-term memory
-- Semantic search
-
-## Key Principles
-
-1. **Ship weekly** - Deploy every Friday
-2. **Measure everything** - No metrics = no feature
-3. **Reuse components** - Build once, use everywhere
-4. **Agent-first** - Design for autonomous workflows
-5. **AI-assisted, human-approved** - All code reviewed
+1. Read [Core Architecture](./01-core/)
+2. Set up environment: [Infrastructure/SETUP](./03-infrastructure/SETUP.md)
+3. Review [Development Standards](./04-development/STANDARDS.md)
+4. Join Google Chat #engineering
 
 ## Contact
 
-- **Email**: himanshu.dixit@nexod.ai
-- **Google Chat**: himanshu.dixit@nexod.ai
-- **GitHub**: @Himan-D
+himanshu.dixit@nexod.ai
