@@ -1,24 +1,29 @@
 # Senior Engineer Evaluation Framework
 
-**For**: Frontend Lead, Backend Lead, AI/ML Engineer  
-**Platform**: Real Estate Agent Platform (Propnet-like)  
-**Owner**: Himanshu Dixit
+**Propnet.ai - AI-Powered Real Estate Platform**
 
 ---
 
 ## What We're Building
 
-Propnet.ai is an AI-powered real estate platform. It's Uber for real estate - connecting buyers, sellers, and agents with AI handling the matching, scheduling, and follow-ups.
+Propnet.ai is transforming real estate. Think Uber meets Zillow meets Claude.
 
-This is not a simple CRUD app. It's:
-- Real-time (property status changes instantly)
-- Data-heavy (thousands of properties, images, messages)
-- AI-intensive (agents that actually do work)
-- Trust-critical (people's homes, lots of money)
+Buyers, sellers, and agents all on one platform. AI handles:
+- Property matching
+- Scheduling showings
+- Market analysis
+- Follow-ups
+- Negotiations
+
+This is not a CRUD app. It's:
+- Real-time (property changes instantly)
+- Data-heavy (thousands of properties)
+- AI-intensive (agents that do real work)
+- Trust-critical (people's homes, significant money)
 
 ---
 
-## Senior vs Intern: What's Different
+## What Makes Senior Different from Intern
 
 **Intern**: Can ship defined tasks  
 **Senior**: Defines what to build and how
@@ -33,364 +38,250 @@ This is not a simple CRUD app. It's:
 
 ## Senior Frontend Engineer
 
-### Must Have Experience
+### Experience Requirements
 
-**1. Large Application Architecture**
-- Managed 10,000+ line codebase
-- Code splitting, lazy loading
-- Bundle optimization
+#### 1. Large Application Architecture
+**What it means**: You've managed big codebases.
 
-**Hardest to master**:
+**The hard part**:
 > "When do I split this component vs keep it together?"
-> 
-> Understanding that co-location isn't just about files. It's about what loads together, what can be cached, what affects TTI (Time to Interactive).
 
-**2. State Management at Scale**
-- Multiple data sources (server, client, URL)
-- Caching strategies
-- Synchronization
+Co-location isn't just files. It's about what loads together, what can be cached, what affects Time to Interactive.
 
-**Hardest to master**:
+**What we need**: You've shipped features in 10,000+ line codebases.
+
+#### 2. State Management at Scale
+**What it means**: Multiple data sources need to work together.
+
+**The hard part**:
 > "Why is my state out of sync?"
-> 
-> When you have React Query for server state, Zustand for client state, URL for shareable state - keeping them in sync is hard. Knowing when to use which is harder.
 
-**3. Performance Optimization**
-- Core Web Vitals (LCP, FID, CLS)
-- Bundle analysis
-- Memory leak detection
+React Query for server state. Zustand for client. URL for shareable. Keeping them synchronized is hard. Knowing when to use which is harder.
 
-**Hardest to master**:
+**What we need**: You've designed state architecture for complex apps.
+
+#### 3. Performance Optimization
+**What it means**: Fast = good. Slow = users leave.
+
+**The hard part**:
 > "It's slow but I don't know why."
-> 
-> Performance profiling is its own skill. Knowing Chrome DevTools isn't enough - you need to understand what metrics matter and what to optimize first.
 
-### Should Have Built
+Performance profiling is its own skill. Chrome DevTools isn't enough. Need to understand what metrics matter.
 
-**At least one of**:
-- Real-time application (WebSocket, SSE)
-- Large dashboard (100+ components)
-- Design system (used by 5+ people)
-- Performance optimization (LCP from 4s to 2s)
+**What we need**: You've taken something slow and made it fast.
 
-### Real Estate Specific Challenges
+### Propnet-Specific Challenges
 
 **1. Maps Integration**
-- Google Maps/Mapbox
-- Property markers (thousands on screen)
-- Clustering, bounding
-- Custom markers (sold, available, open house)
+- Property markers (thousands)
+- Clustering
+- Different zoom levels
 
-**Why hard**: Performance with many markers. Different zoom levels need different detail.
+**Why hard**: Performance. Different detail at different zoom.
 
 **2. Media Gallery**
-- Image heavy (property photos)
+- 20-50 photos per property
 - Lazy loading
 - Image optimization
-- Zoom, crop, rotate
 
-**Why hard**: Hundreds of images per property. Can't load all at once.
+**Why hard**: Can't load all at once. Storage costs.
 
-**3. Real-time Property Updates**
-- Status changes (available → under contract → sold)
+**3. Real-Time Updates**
+- Status changes (available → sold)
 - Price changes
-- New listings
-- Multiple viewers seeing same data
+- Multiple viewers
 
-**Why hard**: WebSocket management, optimistic updates, conflict resolution.
+**Why hard**: WebSocket management, optimistic updates.
 
 **4. Complex Forms**
 - Property listings (30+ fields)
 - Multi-step wizards
 - Draft saving
-- Image uploads
 
-**Why hard**: State management across steps. Validation complexity.
+**Why hard**: State across steps. Validation complexity.
 
 ### Evaluation Rubric
 
 | Category | Competent (3) | Strong (4) | Expert (5) |
 |----------|---------------|------------|------------|
-| **Architecture** | Can design features | Can design systems | Can design platform |
-| **Performance** | Can optimize known issues | Can find unknown issues | Can prevent issues |
-| **State Management** | Uses patterns correctly | Chooses right pattern | Creates new patterns |
-| **Code Quality** | Clean, tested | Documented, reviewed | Enables others |
-| **Leadership** | Ships features | Mentors interns | Sets technical direction |
+| Architecture | Can design features | Can design systems | Can design platform |
+| Performance | Optimize known issues | Find unknown issues | Prevent issues |
+| State Management | Uses patterns correctly | Chooses right pattern | Creates new patterns |
+| Code Quality | Clean, tested | Documented, reviewed | Enables others |
+| Leadership | Ships features | Mentors interns | Sets direction |
 
-**Minimum**: 15+ out of 25
+**Minimum**: 15+ / 25
 
 ---
 
 ## Senior Backend Engineer
 
-### Must Have Experience
+### Experience Requirements
 
-**1. Database Design at Scale**
-- Complex relationships
-- Query optimization
-- Indexing strategies
+#### 1. Database Design at Scale
+**What it means**: You know how data should be organized.
 
-**Hardest to master**:
+**The hard part**:
 > "This query is slow but I don't know why."
-> 
-> EXPLAIN ANALYZE is your friend. Understanding that ORM generates queries, not magic. Knowing when to denormalize.
 
-**2. API Design**
-- RESTful principles
-- Versioning
-- Documentation
-- Rate limiting
+EXPLAIN ANALYZE is your friend. ORM generates queries, not magic. Knowing when to denormalize.
 
-**Hardest to master**:
+**What we need**: You've designed schemas and optimized queries.
+
+#### 2. API Design
+**What it means**: Others consume your APIs. Make them good.
+
+**The hard part**:
 > "Should this be a new endpoint or query param?"
-> 
-> API design is about abstractions. Getting it wrong means breaking clients later.
 
-**3. Distributed Systems Concepts**
-- Caching (multi-layer)
-- Message queues
-- eventual consistency
+API design is about abstractions. Getting it wrong breaks clients.
 
-**Hardest to master**:
+**What we need**: You've designed APIs used by others.
+
+#### 3. Distributed Systems
+**What it means**: Things don't always work on one machine.
+
+**The hard part**:
 > "Why did the user see old data?"
-> 
-> Understanding that caching means data can be stale. Knowing when consistency matters vs when eventual is fine.
 
-**4. Security**
-- Authentication flows
-- Authorization (RBAC)
-- API security
+Caching means data can be stale. Knowing when consistency matters vs when eventual is fine.
 
-**Hardest to master**:
+**What we need**: You've worked with caching, queues, distributed data.
+
+#### 4. Security
+**What it means**: Protect user data. Always.
+
+**The hard part**:
 > "Is this secure?"
-> 
-> Security isn't a feature, it's a mindset. Knowing attack vectors, common mistakes.
 
-### Should Have Built
+Security isn't a feature. It's a mindset. Knowing attack vectors, common mistakes.
 
-**At least one of**:
-- High-traffic API (10k+ requests/day)
-- Real-time system (WebSocket)
-- Payment integration
-- Third-party API integration
+**What we need**: You've handled auth, authorization, API security.
 
-### Real Estate Specific Challenges
+### Propnet-Specific Challenges
 
 **1. Search & Filtering**
-- 15+ filter parameters
-- Geo queries (within X miles)
+- 15+ filter options
+- Geo queries
 - Full-text search
-- Sorting (price, date, relevance)
 
-**Why hard**: Different filters need different indexing strategies. Geo queries are expensive.
+**Why hard**: Different filters need different indexes.
 
 **2. Media Handling**
 - Image upload/processing
 - Thumbnail generation
 - CDN integration
-- Storage costs
 
-**Why hard**: Properties have 20-50 photos. Processing takes time. Storage costs add up.
+**Why hard**: Processing takes time. Storage costs.
 
 **3. Scheduling**
-- Open house scheduling
-- Showing appointments
-- Agent availability
+- Showings
+- Open houses
 - Time zones
 
-**Why hard**: Real-world conflicts. Agent A says 2pm, Agent B says 2pm. Time zones.
+**Why hard**: Real-world conflicts. "Agent A says 2pm, Agent B says 2pm."
 
 **4. Notifications**
 - Email, SMS, push
 - Scheduled notifications
-- Template management
 - Opt-out handling
 
-**Why hard**: Delivery guarantees. Rate limits. User preferences.
-
-**5. Lead Management**
-- Lead capture
-- Assignment logic
-- Follow-up automation
-- Conversion tracking
-
-**Why hard**: Sales workflows are complex. Attribution is hard.
+**Why hard**: Delivery guarantees. Rate limits.
 
 ### Evaluation Rubric
 
 | Category | Competent (3) | Strong (4) | Expert (5) |
 |----------|---------------|------------|------------|
-| **Database** | Can write queries | Can optimize | Can design schema |
-| **API Design** | RESTful APIs | Versioning, docs | Platform thinking |
-| **Distributed** | Uses caching | Chooses right approach | Creates new patterns |
-| **Security** | Follows best practices | Audits code | Threat modeling |
-| **Leadership** | Ships features | Mentors interns | Sets technical direction |
+| Database | Can write queries | Can optimize | Can design schema |
+| API Design | RESTful APIs | Versioning, docs | Platform thinking |
+| Distributed | Uses caching | Chooses approach | Creates patterns |
+| Security | Follows best practices | Audits code | Threat modeling |
+| Leadership | Ships features | Mentors interns | Sets direction |
 
-**Minimum**: 15+ out of 25
+**Minimum**: 15+ / 25
 
 ---
 
 ## Senior AI/ML Engineer
 
-### Must Have Experience
+### Experience Requirements
 
-**1. LLM Integration**
-- API integration (OpenAI, Anthropic)
-- Prompt engineering
-- Function calling
-- Streaming
+#### 1. LLM Integration
+**What it means**: Making AI work in production.
 
-**Hardest to master**:
+**The hard part**:
 > "The model keeps giving bad answers."
-> 
-> Prompt debugging is hard because you can't step through it. Need systematic approaches to testing prompts.
 
-**2. Agent Architecture**
-- Tool definition
-- Chain of thought
-- Error handling
-- Memory management
+Prompt debugging is hard because you can't step through. Need systematic approaches.
 
-**Hardest to master**:
+**What we need**: You've shipped LLM integrations.
+
+#### 2. Agent Architecture
+**What it means**: AI that takes actions, not just answers.
+
+**The hard part**:
 > "The agent keeps doing the wrong thing."
-> 
-> Agents can get into weird loops or misinterpret instructions. Guardrails and monitoring are critical.
 
-**3. Vector Databases**
-- Embedding generation
-- Similarity search
-- RAG implementation
-- Chunking strategies
+Agents can get into loops or misinterpret. Guardrails and monitoring critical.
 
-**Hardest to master**:
+**What we need**: You've built agent systems.
+
+#### 3. Vector Databases
+**What it means**: Making AI remember things.
+
+**The hard part**:
 > "RAG isn't returning good results."
-> 
-> Is it the embedding? The chunking? The retrieval? The prompt? Need systematic debugging.
 
-### Should Have Built
+Is it the embedding? Chunking? Retrieval? Prompt? Need systematic debugging.
 
-**At least one of**:
-- Production LLM integration
-- Agent system in production
-- RAG system with evaluation
+**What we need**: You've implemented RAG systems.
 
-### Real Estate Specific Challenges
+### Propnet-Specific Challenges
 
 **1. Property Matching**
-- User preferences → property matching
-- Learning from user behavior
-- Explainability ("why this property?")
+- "I want something modern but not noisy"
+- Learning from behavior
+- "Why this property?"
 
-**Why hard**: Preferences are complex ("near work but not noisy"). Attribution is hard.
+**Why hard**: Preferences are complex. Attribution is hard.
 
 **2. Conversation Agents**
 - Remembering context
 - Handling interruptions
-- Multi-turn conversations
 
-**Why hard**: LLM context windows are limited. Need to summarize or truncate history intelligently.
+**Why hard**: Context windows limited. Need smart summarization.
 
 **3. Market Analysis**
 - Price predictions
 - Market trends
-- Comparable analysis
 
-**Why hard**: Real estate is local. Data can be sparse. Models need to handle cold start.
+**Why hard**: Real estate is local. Data sparse.
 
 **4. Content Generation**
 - Property descriptions
 - Marketing copy
-- Email templates
 
-**Why hard**: Need to sound natural, not AI-generated. Brand voice consistency.
+**Why hard**: Must sound natural, not AI-generated.
 
 ### Evaluation Rubric
 
 | Category | Competent (3) | Strong (4) | Expert (5) |
 |----------|---------------|------------|------------|
-| **LLM Integration** | API calls work | Prompt optimization | Research-level |
-| **Agent Systems** | Simple agents | Complex orchestration | Production-grade |
-| **RAG/Vectors** | Basic implementation | Evaluation + tuning | Novel approaches |
-| **ML Concepts** | Basic statistics | Modeling | Research |
-| **Leadership** | Ships features | Sets AI strategy | Company AI direction |
+| LLM Integration | API calls work | Prompt optimization | Research-level |
+| Agent Systems | Simple agents | Complex orchestration | Production-grade |
+| RAG/Vectors | Basic implementation | Evaluation + tuning | Novel approaches |
+| ML Concepts | Basic statistics | Modeling | Research |
+| Leadership | Ships features | Sets AI strategy | Company direction |
 
-**Minimum**: 15+ out of 25
-
----
-
-## Common Senior Evaluation Questions
-
-### For All
-
-1. **"Walk me through how you'd design X"**
-   - Looking for: System thinking, trade-offs, scaling considerations
-
-2. **"What's the hardest technical problem you've solved?"**
-   - Looking for: Depth of experience, problem-solving approach
-
-3. **"How do you stay current with technology?"**
-   - Looking for: Learning habits, curiosity
-
-4. **"Tell me about a time you disagreed with your team"**
-   - Looking for: Communication, collaboration, how they handle conflict
-
-5. **"How would you mentor an intern?"**
-   - Looking for: Leadership, patience, teaching ability
-
-### For Frontend
-
-1. **"How would you optimize a page with LCP of 4s?"**
-   - Looking for: Understanding of Core Web Vitals, prioritization
-
-2. **"When do you use Server Components vs Client Components?"**
-   - Looking for: Next.js 14 understanding, trade-offs
-
-3. **"How do you handle state that's shared across 10 components?"**
-   - Looking for: State management patterns, when to lift vs context
-
-### For Backend
-
-1. **"Design an API that handles 10,000 properties with 20 filter options"**
-   - Looking for: Query optimization, caching, pagination
-
-2. **"How would you handle a service that's down?"**
-   - Looking for: Resilience patterns, error handling
-
-3. **"What's the difference between SQL and NoSQL for this use case?"**
-   - Looking for: Trade-offs, when to use what
-
-### For AI
-
-1. **"How would you evaluate if your RAG system is working?"**
-   - Looking for: Evaluation metrics, testing approach
-
-2. **"What happens when the LLM API is down?"**
-   - Looking for: Fallback strategies, error handling
-
-3. **"How would you reduce hallucinations in property descriptions?"**
-   - Looking for: Prompt engineering, validation, human-in-loop
+**Minimum**: 15+ / 25
 
 ---
 
-## Hardest Topics for Seniors
+## Technical Deep Dive
 
-| Role | Topic | Why It's Hard |
-|------|-------|---------------|
-| Frontend | Performance at scale | Invisible problems until you measure |
-| Frontend | State synchronization | Complex interactions, hard to debug |
-| Frontend | Bundle optimization | Trade-offs aren't obvious |
-| Backend | Distributed caching | Invalidation is hard |
-| Backend | Query optimization | Can't see what you don't measure |
-| Backend | API versioning | Breaking changes are expensive |
-| AI | Prompt debugging | Non-deterministic, hard to reproduce |
-| AI | Agent reliability | Loops, hallucinations, timeouts |
-| AI | RAG evaluation | No standard metrics |
+### What You Should Know
 
----
-
-## Technical Deep Dive: What You Should Know
-
-### Profiling Tools
+#### Profiling Tools
 
 **Frontend**:
 - Chrome DevTools Performance
@@ -399,37 +290,73 @@ This is not a simple CRUD app. It's:
 - React DevTools Profiler
 
 **Backend**:
-- Py-spy (Python)
-- pg_stat_statements (PostgreSQL)
+- Py-spy
+- pg_stat_statements
 - Redis MONITOR
-- New Relic / Datadog
 
 **AI**:
-- LangSmith (LangChain)
-- Weights & Biases
+- LangSmith
 - Custom logging
 
-### Must-Know Libraries
+#### Must-Know Libraries
 
-**Frontend**:
-- Next.js 14
-- React Query
-- Zustand
-- Tailwind CSS
-- Playwright
+**Frontend**: Next.js 14, React Query, Zustand, Tailwind CSS, Playwright
 
-**Backend**:
-- FastAPI
-- SQLAlchemy 2.0
-- Alembic
-- Celery
-- Redis
+**Backend**: FastAPI, SQLAlchemy 2.0, Alembic, Celery, Redis
 
-**AI**:
-- CrewAI
-- LangGraph
-- OpenAI SDK
-- Pinecone
+**AI**: CrewAI, LangGraph, OpenAI SDK, Pinecone
+
+---
+
+## Common Questions
+
+### For All
+
+1. **"Walk me through how you'd design X"**
+   - System thinking, trade-offs, scaling
+
+2. **"What's the hardest technical problem you've solved?"**
+   - Depth, problem-solving approach
+
+3. **"How do you stay current with technology?"**
+   - Learning habits, curiosity
+
+4. **"Tell me about a time you disagreed with your team"**
+   - Communication, collaboration
+
+### For Frontend
+
+1. **"How would you optimize a page with LCP of 4s?"**
+2. **"When do you use Server vs Client Components?"**
+3. **"How do you handle state shared across 10 components?"**
+
+### For Backend
+
+1. **"Design an API for 10,000 properties with 20 filters"**
+2. **"How would you handle a service that's down?"**
+3. **"SQL vs NoSQL for this use case?"**
+
+### For AI
+
+1. **"How would you evaluate if RAG is working?"**
+2. **"What happens when LLM API is down?"**
+3. **"How would you reduce hallucinations?"**
+
+---
+
+## Hardest Topics
+
+| Role | Topic | Why It's Hard |
+|------|-------|---------------|
+| Frontend | Performance at scale | Invisible until measured |
+| Frontend | State synchronization | Complex interactions |
+| Frontend | Bundle optimization | Trade-offs aren't obvious |
+| Backend | Distributed caching | Invalidation is hard |
+| Backend | Query optimization | Can't see without tools |
+| Backend | API versioning | Breaking changes expensive |
+| AI | Prompt debugging | Non-deterministic |
+| AI | Agent reliability | Loops, hallucinations |
+| AI | RAG evaluation | No standard metrics |
 
 ---
 
@@ -441,7 +368,7 @@ This is not a simple CRUD app. It's:
 - Mentored 1-2 interns
 
 **After 6 months**:
-- Owns a significant area
+- Owns significant area
 - Makes architectural decisions
 - Leads technical discussions
 
@@ -452,29 +379,17 @@ This is not a simple CRUD app. It's:
 
 ---
 
-## Compensation Philosophy
-
-We don't discuss specific numbers here. What matters:
-
-- Market rate
-- Your experience
-- What you bring
-
-We'll figure this out together.
-
----
-
 ## Apply
 
 **Email**: himanshu.dixit@nexod.ai
 
 Include:
 1. GitHub
-2. LinkedIn or resume
+2. Resume or LinkedIn
 3. Brief: What's the hardest technical problem you've solved? How?
 
-No cover letter. Let's talk code.
+Let's talk code.
 
 ---
 
-himanshu.dixit@nexod.ai
+*Propnet.ai - Building the Future of Real Estate*
