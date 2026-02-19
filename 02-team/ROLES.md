@@ -1,242 +1,157 @@
-# Team Structure & Roles
+# Team Structure
 
 **Owner**: Himanshu Dixit  
-**Review Date**: Monthly
+**Review**: Monthly
 
-## Team Layers
+## Layers
 
-### Layer 1: Leadership (2 people)
+### Layer 1: Leadership (2)
 
-**Himanshu Dixit - Architect & Senior Backend Lead**
-- System architecture decisions
-- Code review for all backend PRs
-- Database design and optimization
+**Himanshu Dixit - Architect & Agent Lead**
+- System design, agent architecture (CrewAI, LangGraph)
+- Database design, optimization
+- Backend code review
 - Production incidents (P0/P1)
-- Mentoring backend interns
-- AI integration strategy
+- Mentors backend interns
+- AI strategy, prompt engineering
 
-**Senior Frontend Lead (TBD)**
-- Frontend architecture decisions
+**Senior Frontend Lead**
+- Frontend architecture, design system
+- Figma MCP workflows, rapid prototyping
 - Component library ownership
-- Code review for all frontend PRs
-- Performance optimization
-- Mentoring frontend interns
-- UX/UI final decisions
+- Frontend code review
+- Mentors frontend interns
+- UX/UI decisions
 
-**Expectations**:
-- 5+ years experience
-- Can ship production code independently
-- Makes architectural decisions
-- Available for escalations
-- Writes technical RFCs
+**Requirements**: 5+ years, ships independently, writes RFCs
 
-### Layer 2: Interns (5 people)
+### Layer 2: Interns (5)
 
 **Backend Interns (2)**
-- Report to: Himanshu Dixit
-- Build API endpoints
-- Database migrations
-- Background job implementation
-- Testing (80%+ coverage)
+- Report to: Himanshu
+- Build APIs, database migrations
+- Agent integration (CrewAI/LangGraph)
+- Background jobs (Celery)
+- Tests (80%+ coverage)
 
 **Frontend Interns (2)**
 - Report to: Senior Frontend Lead
 - Build UI components
-- Implement features
-- Write E2E tests
-- Responsive design
+- Figma MCP integration
+- Rapid prototyping
+- E2E tests
 
 **DevOps Intern (1)**
-- Report to: Himanshu Dixit
-- CI/CD pipeline maintenance
-- Infrastructure as code
+- Report to: Himanshu
+- CI/CD, infrastructure
 - Monitoring setup
 - Cost optimization
 
-**Expectations**:
-- Ship code weekly
-- Ask questions after 30 min of trying
-- Participate in code reviews
-- Document what you learn
-- Convert to full-time if strong
+**Requirements**: Ship weekly, ask after 30 min stuck, document learning
 
-## Communication Protocol
+## Communication
 
-### Gmail (Official)
+### Gmail
 - External stakeholders
 - Important decisions
 - Weekly summaries
-- Contract/legal stuff
+- Legal/contracts
 
-**Template**:
-```
-Subject: [PROJECT] Brief description
-
-Context:
-Decision needed:
-Options:
-Recommendation:
-Timeline:
-```
-
-### Google Docs (Documentation)
-- RFCs (Request for Comments)
-- Architecture decisions
-- Post-mortems
-- Playbooks
-
-**Structure**:
-- Use headers (H1, H2, H3)
-- Table of contents
-- Comment for questions
-- Version history tracks changes
-
-### Trello (Task Management)
-
-**Boards**:
-1. **Backlog** - Ideas, future work
-2. **This Week** - Current sprint
-3. **In Progress** - Being worked on
-4. **Review** - PRs open
-5. **Done** - Shipped
-
-**Card Format**:
-```
-Title: [Backend] Add user authentication
-Description:
-- What: Implement JWT auth
-- Why: Security requirement
-- Acceptance Criteria:
-  - [ ] Login endpoint works
-  - [ ] Tests pass
-  - [ ] Documentation updated
-- Estimation: 3 days
-- Owner: @intern-name
-```
-
-**Rules**:
-- Every task has an owner
-- Move cards when status changes
-- Add labels (backend/frontend/devops/urgent)
-- Attach PR links
-- Archive done cards weekly
-
-### Slack (Daily Chat)
-
-**Channels**:
-- `#general` - Announcements
-- `#backend` - Backend discussions
-- `#frontend` - Frontend discussions  
-- `#devops` - Infrastructure
-- `#help` - Questions (mention @here if urgent)
-- `#random` - Non-work
+### Google Chat
+**Spaces**:
+- `Engineering - General` - Announcements
+- `Backend` - API, database, agents
+- `Frontend` - UI, components
+- `DevOps` - Infrastructure
+- `Help` - Questions (tag @himanshu if urgent)
 
 **Etiquette**:
-- Use threads for discussions
+- Use threads
 - @mention sparingly
-- Share screenshots, not "it's broken"
-- Loom videos for complex issues
-- React with 👀 when reviewing
+- Share screenshots
+- Loom for complex issues
 
-### GitHub (Code & Issues)
+### Google Drive
+**Structure**:
+```
+Nexod Engineering/
+├── 01-Architecture/       # RFCs, ADRs
+├── 02-Runbooks/          # Incident response
+├── 03-Agents/            # Agent designs
+├── 04-Onboarding/        # New hire docs
+└── 05-Meeting Notes/     # Weekly notes
+```
 
-**Issues**:
-- Bug reports
-- Feature requests
-- Technical debt
+**Naming**: `YYYY-MM-DD - Document Title`  
+**Comments**: Use for questions  
+**Version**: History tracks changes
 
-**Pull Requests**:
-- Require 1 approval minimum
-- Link to Trello card
-- Include screenshots for UI
-- All tests must pass
-- No merge conflicts
+### Trello
+
+**Boards**:
+- `Backlog` - Future work
+- `This Week` - Current sprint
+- `In Progress` - Active
+- `Review` - PRs open
+- `Done` - Shipped
+
+**Card format**:
+```
+[Backend] Add CrewAI research agent
+
+What: Build agent that researches topics
+Why: Automate research workflows
+Acceptance:
+- [ ] Agent executes research
+- [ ] Results stored in DB
+- [ ] Tests pass
+- [ ] Docs updated
+Est: 5 days
+Owner: @intern
+```
+
+### GitHub
+- Issues for bugs/features
+- PRs require 1 approval
+- Link Trello cards
+- Include screenshots
 
 ## Meeting Schedule
 
-| Meeting | When | Who | Duration |
-|---------|------|-----|----------|
-| Standup | Daily 10am | Everyone | 15 min |
-| Sprint Planning | Monday 11am | Everyone | 30 min |
-| Code Review | Wednesday 2pm | Everyone | 45 min |
-| 1:1s | Friday (async) | Interns + Leads | 30 min each |
-| Retro | Last Friday | Everyone | 30 min |
+| Meeting | When | Duration |
+|---------|------|----------|
+| Standup | Daily 10am | 15 min |
+| Sprint Planning | Monday 11am | 30 min |
+| Code Review | Wednesday 2pm | 45 min |
+| 1:1s | Friday async | 30 min |
+| Retro | Last Friday | 30 min |
 
-**Standup Format**:
-1. What I shipped yesterday
-2. What I'm working on today
-3. Blockers (if any)
+## Escalation
 
-## Escalation Path
-
-**Level 1**: Ask in Slack #help
-**Level 2**: Mention @himanshu or @senior-frontend
-**Level 3**: 1:1 meeting
-**Level 4**: Emergency → Call Himanshu
-
-## Documentation Ownership
-
-| Document | Owner | Review Frequency |
-|----------|-------|------------------|
-| Architecture decisions | Himanshu | As needed |
-| API documentation | Backend intern on rotation | Weekly |
-| Component library | Senior Frontend | Bi-weekly |
-| Runbooks | DevOps intern | Monthly |
-| This roles doc | Himanshu | Monthly |
+1. Google Chat `#help`
+2. Tag @himanshu or @senior-frontend
+3. 1:1 meeting
+4. Emergency: Call Himanshu
 
 ## Performance Review
 
 **Interns** (Week 4, 8, 12):
-- Code quality
-- Independence
-- Communication
-- Learning speed
-
-**Conversion Criteria**:
-- Ships production code by week 8
-- Handles feedback gracefully
-- Mentors newer interns
-- Proposes improvements
-
-## Tools Access
-
-**Day 1 Setup**:
-- Gmail account (himanshu.dixit@nexod.ai invites)
-- Google Drive folder
-- Trello board invite
-- Slack workspace
-- GitHub organization
-- Figma (view access)
-- Sentry (read-only initially)
-- Vercel (read-only initially)
-- Supabase (dev database)
-
-**Week 2** (if performing well):
-- Production read access
-- Sentry write access
-- Deploy permissions (staging)
-- Admin on Trello
+- Code quality, independence, communication
+- **Conversion**: Ship prod code by week 8, mentor others
 
 ## Onboarding Checklist
 
-**Before Start**:
-- [ ] Laptop ordered (if needed)
-- [ ] Accounts created
-- [ ] Trello board access
-- [ ] First week tasks prepared
-
 **Day 1**:
-- [ ] Environment setup complete
+- [ ] Gmail, Google Drive, Chat access
+- [ ] Trello, GitHub, Figma access
+- [ ] Environment setup
 - [ ] First PR merged
-- [ ] Introduced to team
-- [ ] Added to all channels
 
 **Week 1**:
 - [ ] First feature shipped
-- [ ] Documentation read
+- [ ] Read documentation
 - [ ] 1:1 with mentor
-- [ ] Feedback on onboarding
 
 ---
 
-*Questions? Slack @himanshu or email himanshu.dixit@nexod.ai*
+Questions: himanshu.dixit@nexod.ai

@@ -1,98 +1,97 @@
-# Architecture Nexod - Platform Overview
+# Nexod Platform Architecture
 
 **Repository**: https://github.com/Himan-D/architecture-nexod  
 **Owner**: Himanshu Dixit (himanshu.dixit@nexod.ai)  
 **Last Updated**: Feb 2026
 
+## What We Build
+
+Multi-tenant SaaS platform with AI agents, workflow automation, and real-time collaboration. Core differentiator: autonomous agents that execute complex workflows.
+
 ## Quick Links
 
 - [Core Architecture](./01-core/)
-- [Team Structure & Hiring](./02-team/)
-- [Infrastructure & DevOps](./03-infrastructure/)
-- [Development Guidelines](./04-development/)
-- [Policies & Standards](./05-policies/)
+- [Team Structure](./02-team/)
+- [Infrastructure](./03-infrastructure/)
+- [Development](./04-development/)
+- [Policies](./05-policies/)
 
 ## Tech Stack
 
-| Layer | Technology |
-|-------|-----------|
-| Frontend | Next.js 14, TypeScript, Tailwind CSS |
-| Backend | FastAPI, Python 3.11 |
-| Database | PostgreSQL (Prod), Supabase (Dev) |
-| Auth | Clerk |
-| Cache | Redis |
-| Hosting | Vercel (Frontend), AWS ECS (Backend) |
-| Monitoring | Sentry, Py-spy, Prometheus |
+| Layer | Technology | Purpose |
+|-------|-----------|---------|
+| Frontend | Next.js 14, TypeScript, Tailwind | Web app, rapid prototyping |
+| Backend | FastAPI, Python 3.11 | APIs, async processing |
+| Agents | CrewAI, LangGraph | Autonomous workflows |
+| Database | PostgreSQL (Prod), Supabase (Dev) | Primary data |
+| Vector | Pinecone | Embeddings, RAG |
+| Auth | Clerk | User management |
+| Cache | Redis | Sessions, rate limiting |
+| Hosting | Vercel (FE), AWS ECS (BE) | Scale, cost |
+| Monitor | Sentry, Py-spy, Prometheus | Observability |
 
 ## Team Structure
 
-**Layer 1 - Leadership**:
-- Himanshu Dixit (Architect + Senior Backend)
-- Senior Frontend Engineer (TBD)
+**Layer 1 - Leadership (2)**
+- Himanshu Dixit: Architecture, backend, agents
+- Senior Frontend Lead: Frontend, design system, Figma MCP
 
-**Layer 2 - Core Team**:
-- 2 Backend Interns
-- 2 Frontend Interns  
-- 1 DevOps Intern
+**Layer 2 - Core Team (5)**
+- 2 Backend Interns: APIs, database, agent integration
+- 2 Frontend Interns: UI, components, rapid prototyping
+- 1 DevOps Intern: Infrastructure, CI/CD, monitoring
 
 ## Communication Stack
 
-| Tool | Purpose | Why |
-|------|---------|-----|
-| **Gmail** | Official communication | Professional threads, external comms |
-| **Google Docs** | Documentation, RFCs | Real-time collaboration, version history |
-| **Trello** | Task management | Simple, visual, intern-friendly |
-| **Slack** | Daily chat | Quick questions, notifications |
-| **GitHub** | Code + Issues | Single source of truth |
-| **Figma** | Design | Handoff to dev |
-| **Loom** | Async video | Complex explanations without meetings |
-
-## Folder Structure
-
-```
-├── 01-core/              # Architecture decisions
-├── 02-team/              # Hiring, roles, expectations  
-├── 03-infrastructure/    # DevOps, monitoring, setup
-├── 04-development/       # Coding standards, components
-└── 05-policies/          # AI usage, security, data
-```
-
-## Getting Started
-
-1. Read [Team Roles](./02-team/ROLES.md)
-2. Setup environment: [03-infrastructure/SETUP.md](./03-infrastructure/SETUP.md)
-3. Join communication channels
-4. Pick your first task from Trello
+| Tool | Purpose |
+|------|---------|
+| **Gmail** | Official, external comms |
+| **Google Chat** | Daily chat, quick questions |
+| **Google Drive** | All documentation, RFCs |
+| **Trello** | Task management, sprints |
+| **GitHub** | Code, issues, PRs |
+| **Figma** | Design, rapid prototyping |
+| **Loom** | Async video explanations |
 
 ## Database Strategy
 
-**Production**: AWS RDS PostgreSQL  
-- Multi-AZ for HA
-- Automated backups
-- Read replicas for scale
+**Production**: AWS RDS PostgreSQL
+- Multi-AZ, automated backups, read replicas
+- CrewAI state persistence
+- LangGraph checkpointing
 
-**Development**: Supabase  
-- Instant setup for interns
-- Built-in auth (dev only)
-- Real-time subscriptions
-- Free tier sufficient
+**Development**: Supabase
+- Zero-config, free tier
+- Real-time subscriptions for agent events
+- Instant intern onboarding
 
-**Why 2 databases?**:
-- Production needs AWS SLAs
-- Dev needs speed and zero-config
-- Prevents accidental prod data access
-- Supabase real-time helps with local testing
+## Agent Architecture
+
+**CrewAI**: Multi-agent orchestration
+- Research agents
+- Execution agents  
+- Review agents
+
+**LangGraph**: State machines for complex flows
+- Conditional edges
+- Human-in-the-loop
+- State persistence
+
+**Vector Store**: Pinecone
+- RAG for agents
+- Long-term memory
+- Semantic search
 
 ## Key Principles
 
-1. **Ship fast, iterate faster** - Weekly deploys minimum
-2. **Monitor everything** - If it's not measured, it doesn't exist
-3. **Reusable components** - Build once, use everywhere
-4. **Clear ownership** - Every feature has an owner
-5. **AI-assisted, human-approved** - All AI code reviewed
+1. **Ship weekly** - Deploy every Friday
+2. **Measure everything** - No metrics = no feature
+3. **Reuse components** - Build once, use everywhere
+4. **Agent-first** - Design for autonomous workflows
+5. **AI-assisted, human-approved** - All code reviewed
 
 ## Contact
 
 - **Email**: himanshu.dixit@nexod.ai
-- **Slack**: @himanshu
+- **Google Chat**: himanshu.dixit@nexod.ai
 - **GitHub**: @Himan-D

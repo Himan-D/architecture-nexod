@@ -1,318 +1,174 @@
-# Infrastructure & DevOps
+# Infrastructure
 
-**Owner**: DevOps Intern + Himanshu Dixit  
-**Environments**: Development (Supabase), Production (AWS)
+**Owner**: DevOps Intern + Himanshu Dixit
 
 ## Environments
 
 ### Development: Supabase
-**Why**: Zero-config, instant setup, free tier
-
 ```
 Database: PostgreSQL 15
 Auth: Built-in (dev only)
-Real-time: Enabled
+Real-time: Enabled (for agent events)
 Storage: 500MB
-API: Auto-generated
+Cost: $0
 ```
 
-**Use for**:
-- Local development
-- Feature testing
-- Intern onboarding
-- Demos
-
-**Do NOT use for**:
-- Production data
-- Performance testing
-- Security testing
+**Use**: Local dev, agent testing, intern onboarding
 
 ### Production: AWS
-**Why**: SLAs, compliance, scale
-
 ```
 Database: RDS PostgreSQL 15 (Multi-AZ)
 Compute: ECS Fargate
 Storage: S3 + CloudFront
 Cache: ElastiCache Redis
-Monitoring: CloudWatch + Sentry
+Vector: Pinecone
+Cost: ~$1,650/month
 ```
 
-## Hosting Strategy
+## Agent Stack
+
+### CrewAI
+**Use**: Multi-agent workflows
+- Research crew: Researcher → Analyst → Writer
+- Review crew: Auditor → Validator
+
+**State**: PostgreSQL via crewai-tools
+
+### LangGraph
+**Use**: State machines, human-in-the-loop
+- Complex approval workflows
+- Conditional branching
+- State persistence in PostgreSQL
+
+**Checkpoint**: Redis for fast state recovery
+
+### Pinecone
+**Use**: Vector store for RAG
+- Document embeddings
+- Agent memory
+- Semantic search
+
+```python
+# Pinecone setup
+from pinecone import Pinecone
+pc = Pinecone(api_key=settings.PINECONE_API_KEY)
+index = pc.Index("nexod-knowledge")
+```
+
+## Hosting
 
 ### Frontend: Vercel
-**Why**: Zero-config deployments, edge network, Next.js optimization
-
 ```
 Production: https://app.nexod.ai
 Staging: https://staging.nexod.ai
-Preview: Every PR gets URL
+Preview: Every PR
 ```
 
-**Features**:
-- Automatic HTTPS
-- Global CDN
-- Edge functions
-- Analytics built-in
-- Git integration
+**Why**: Next.js optimization, edge network, automatic HTTPS
 
 ### Backend: AWS ECS Fargate
-**Why**: Serverless containers, auto-scaling, pay-per-use
-
 ```
-Production: ALB → ECS Fargate (2 tasks min, 10 max)
-Staging: Single task, t3.medium
+Production: 2-10 tasks
+Staging: 1 task (t3.medium)
 ```
 
-**Why not Vercel for backend?**:
-- Vercel has 10s timeout on functions
-- We need long-running AI calls (30s+)
-- Need persistent connections (WebSockets)
-- Better cost control at scale
+**Why**: Long-running agents (30s+), WebSockets, cost control
 
-## Database Architecture
+## Database
 
 ### Production (RDS)
 ```yaml
 Instance: db.r6g.large
-Storage: 100GB GP3 (auto-scaling)
+Storage: 100GB GP3
 Multi-AZ: Yes
 Backups: 7 days
 Encryption: Yes
-Public access: No
 ```
 
-**Connection Pool**:
-- Max: 100 connections
-- Timeout: 30s
-- PgBouncer for pooling
-
-**Read Replicas**:
-- 2 replicas for read-heavy workloads
-- Route analytics to replicas
+**Agent Tables**:
+- `agent_sessions`: Active agent runs
+- `agent_logs`: Execution logs
+- `vector_metadata`: Pinecone metadata
 
 ### Development (Supabase)
-```yaml
-Plan: Free tier
-Database: PostgreSQL 15
-API: REST + GraphQL
-Auth: Built-in
-Storage: 500MB
-```
+**Why**: Instant setup, real-time for agent events, free tier
 
-**Migration Process**:
-1. Develop locally with Supabase
-2. Test migrations in staging (AWS)
-3. Production deploy with Alembic
-4. Verify with health checks
-
-## Authentication: Clerk
-**Why**: Best-in-class DX, pre-built components, scalable
-
+## Auth: Clerk
 ```javascript
 // Frontend
-import { ClerkProvider, SignIn } from '@clerk/nextjs'
+import { ClerkProvider } from '@clerk/nextjs'
 
-// Middleware
-import { authMiddleware } from '@clerk/nextjs'
-export default authMiddleware({
-  publicRoutes: ['/']
-})
-```
-
-**Features**:
-- Email/password
-- OAuth (Google, GitHub)
-- MFA
-- User management dashboard
-- Webhooks for backend sync
-
-**Backend Verification**:
-```python
+// Backend
 from clerk_backend_api import Clerk
-
 clerk = Clerk(bearer_auth=settings.CLERK_SECRET_KEY)
-user = clerk.users.get(user_id)
 ```
 
-## Monitoring Stack
+**Features**: OAuth, MFA, webhooks for agent permissions
 
-### Sentry (Errors + Performance)
-**Why**: Industry standard, great DX
+## Monitoring
 
-**Setup**:
+### Sentry
 ```python
-# Backend
 sentry_sdk.init(
     dsn=settings.SENTRY_DSN,
     traces_sample_rate=0.1,
-    profiles_sample_rate=0.01,
 )
 ```
 
-```javascript
-// Frontend
-Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  tracesSampleRate: 0.1,
-})
-```
+**Alerts**:
+- >10 errors/5min → Google Chat
+- Agent failures → Immediate alert
+- Performance regression → Chat
 
-**Alert Rules**:
-- >10 errors/5min → Slack
-- >100 errors/5min → Page
-- New issue type → Slack
-- Performance regression → Slack
-
-### Py-spy (Python Profiling)
-**Why**: Zero-overhead profiling, production safe
-
-**Install**: `pip install py-spy`
-
-**Usage**:
+### Py-spy
 ```bash
-# Top-like view
 py-spy top --pid <pid>
-
-# Record flamegraph
 py-spy record -o profile.svg --pid <pid>
-
-# Live dump
-py-spy dump --pid <pid>
 ```
 
-**When to use**:
-- API latency >500ms
-- Memory leaks suspected
-- High CPU usage
-- Before optimization (always profile first)
+**Use**: Agent performance, API latency >500ms
 
-**Metrics to watch**:
-- GIL contention
-- Database query time
-- JSON serialization
-- Function call frequency
+### Prometheus + Grafana
+**Self-hosted**: $80/month  
+**Metrics**: Agent execution time, API latency, DB queries
 
-### Prometheus + Grafana (Metrics)
-**Why**: Free, flexible, industry standard
-
-**Self-hosted on ECS**:
-- Prometheus: $50/month (t3.small)
-- Grafana: $30/month (t3.micro)
-- Storage: 30-day retention
-
-**Key Metrics**:
-```python
-# Request metrics
-http_requests_total = Counter('http_requests_total', ['method', 'endpoint', 'status'])
-http_request_duration = Histogram('http_request_duration_seconds', ['method', 'endpoint'])
-
-# Business metrics
-active_users = Gauge('active_users', 'Currently active users')
-tasks_created = Counter('tasks_created_total', ['user_type'])
-```
-
-### Memray (Memory Profiling)
-**Why**: Python memory leaks
-
-```bash
-pip install memray
-python -m memray run app.py
-python -m memray flamegraph memray-output.bin
-```
-
-## Caching Strategy
+## Caching
 
 ### Redis Layers
 
-**L1 - Application Cache**:
+**L1: Sessions**
 ```python
-# User sessions
 redis.setex(f"session:{user_id}", 3600, session_data)
-
-# API responses
-redis.setex(f"api:{cache_key}", 300, json.dumps(data))
 ```
 
-**L2 - Database Query Cache**:
+**L2: Agent State**
 ```python
-# Expensive queries
+redis.setex(f"agent:{agent_id}:state", 300, state_json)
+```
+
+**L3: API Responses**
+```python
 @cache_for(seconds=60)
-def get_dashboard_data(user_id):
+def get_agent_results(agent_id):
     return db.query(...)
-```
-
-**L3 - CDN Cache (Vercel/CloudFront)**:
-```javascript
-// Static assets, API responses
-Cache-Control: public, max-age=3600, stale-while-revalidate=86400
-```
-
-### Cache Invalidation
-
-**Pattern**:
-```python
-# Write-through cache
-async def update_user(user_id, data):
-    # Update DB
-    await db.execute("UPDATE users SET ...")
-    # Invalidate cache
-    await redis.delete(f"user:{user_id}")
 ```
 
 ## Session Management
 
-### Backend Sessions (Redis)
-```python
-# Store session
-session_id = generate_token()
-redis.setex(f"session:{session_id}", 3600, json.dumps(user_data))
-
-# Verify session
-session_data = redis.get(f"session:{session_id}")
-if not session_data:
-    raise Unauthorized()
-```
-
-### Frontend State (Zustand)
-```typescript
-// Global state
-const useStore = create<Store>()(
-  persist(
-    (set, get) => ({
-      user: null,
-      setUser: (user) => set({ user }),
-    }),
-    { name: 'app-storage' }
-  )
-)
-```
-
-### Server State (React Query)
-```typescript
-// API caching
-const { data } = useQuery({
-  queryKey: ['tasks'],
-  queryFn: fetchTasks,
-  staleTime: 5 * 60 * 1000, // 5 min
-})
-```
+**Backend**: Redis  
+**Frontend**: Zustand + React Query  
+**Agent State**: LangGraph checkpointing (PostgreSQL + Redis)
 
 ## Latency Targets
 
-| Metric | Target | Alert At |
-|--------|--------|----------|
-| API p50 | <100ms | >200ms |
+| Metric | Target | Alert |
+|--------|--------|-------|
 | API p95 | <300ms | >500ms |
-| API p99 | <500ms | >1s |
+| Agent response | <5s | >10s |
 | Database | <50ms | >100ms |
-| Redis | <5ms | >10ms |
-| Frontend TTFB | <200ms | >500ms |
-| Frontend LCP | <2.5s | >4s |
+| Vector search | <100ms | >200ms |
 
-## CI/CD Pipeline
-
-**GitHub Actions**:
+## CI/CD
 
 ```yaml
 name: Deploy
@@ -323,51 +179,39 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Test Backend
-        run: |
-          cd backend
-          pytest
-      - name: Test Frontend  
-        run: |
-          cd frontend
-          npm test
+      - run: cd backend && pytest
+      - run: cd frontend && npm test
   
   deploy-staging:
     needs: test
     if: github.ref == 'refs/heads/develop'
-    steps:
-      - name: Deploy to Staging
-        run: |
-          aws ecs update-service --cluster staging --service api
+    run: aws ecs update-service --cluster staging --service api
   
   deploy-production:
     needs: test
     if: github.ref == 'refs/heads/main'
-    steps:
-      - name: Deploy to Production
-        run: |
-          aws ecs update-service --cluster production --service api
+    run: aws ecs update-service --cluster production --service api
 ```
 
-## Cost Optimization
+## Costs
 
-**Current Estimate**:
-- Supabase (dev): $0
-- Vercel Pro: $20/month
-- AWS ECS (staging): $150/month
-- AWS ECS (production): $800/month
-- RDS PostgreSQL: $350/month
-- ElastiCache: $200/month
-- S3 + CloudFront: $100/month
-- Sentry: $26/month
-- **Total**: ~$1,650/month
+| Service | Monthly |
+|---------|---------|
+| Supabase | $0 |
+| Vercel Pro | $20 |
+| AWS ECS (staging) | $150 |
+| AWS ECS (prod) | $800 |
+| RDS PostgreSQL | $350 |
+| ElastiCache | $200 |
+| Pinecone | $70 |
+| S3 + CloudFront | $100 |
+| Sentry | $26 |
+| **Total** | **~$1,716** |
 
-**Savings**:
-- Use Spot instances for non-critical workloads
-- RDS Reserved Instances (1-year commit)
-- S3 Intelligent Tiering
-- CloudFront caching
+## Setup
+
+See [SETUP.md](./SETUP.md)
 
 ---
 
-*Questions? Slack #devops or email himanshu.dixit@nexod.ai*
+Questions: himanshu.dixit@nexod.ai
