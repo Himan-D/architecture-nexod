@@ -5,64 +5,68 @@
 
 ## What We're Building
 
-Agent platform. Users create workflows, AI agents execute them autonomously. Think Zapier meets Claude - but the agents actually do the work, not just move data around.
+Real estate platform like Propnet.ai. Uber for real estate - buyers, sellers, and agents all in one place.
 
-**The core bet**: Autonomous agents that can handle multi-step workflows with memory, reasoning, and human-in-the-loop checkpoints.
+AI agents handle the heavy lifting - property matching, scheduling, follow-ups, market analysis.
+
+**The core**: Autonomous agents that understand real estate. They match buyers to properties, schedule showings, handle negotiations.
 
 ## The Stack
 
-| Layer | Tech | Why This One |
-|-------|------|-------------|
-| Frontend | Next.js 14 + TypeScript | Server Components = less JS shipping. We're not building a SPA, this is a tool. |
-| Backend | FastAPI + Python 3.11 | Async is non-negotiable for agent execution. Pydantic for type safety at API boundaries. |
-| Agents | CrewAI + LangGraph | CrewAI for multi-agent orchestration, LangGraph for complex state machines. Different tools for different jobs. |
-| Database | PostgreSQL | Need ACID. JSONB for agent state. Don't reach for Mongo until we have a reason. |
-| Vectors | Pinecone | Managed vector DB. Don't want to ops our own. RAG is core to agent memory. |
-| Cache | Redis | Sessions, Celery broker, rate limiting. Standard stuff. |
-| Auth | Clerk | Best DX. Pre-built components. Webhooks keep our DB in sync. |
-| Hosting | Vercel (frontend), AWS ECS (backend) | Vercel for zero-config Next.js. ECS for long-running agent tasks that would timeout on serverless. |
+| Layer | Tech | Why |
+|-------|------|-----|
+| Frontend | Next.js 14 + TypeScript | Server Components = less JS. This is a tool, not a toy app. |
+| Backend | FastAPI + Python 3.11 | Async for real-time. Pydantic for type safety. |
+| Agents | CrewAI + LangGraph | Different problems need different tools. |
+| Database | PostgreSQL | ACID matters. JSONB for flexibility. |
+| Vectors | Pinecone | RAG for agent memory. |
+| Cache | Redis | Sessions, Celery, rate limiting. |
+| Auth | Clerk | Best DX. Works. |
+| Hosting | Vercel (FE), AWS ECS (BE) | Zero-config frontend. Long-running agent tasks don't work on serverless functions. |
+
+## Real Estate Platform Challenges
+
+This isn't a blog. Here's what makes it hard:
+
+- **Real-time property status** - Available → under contract → sold. Everyone sees changes instantly.
+- **Search on steroids** - 15+ filters, geo queries, sorting. Thousands of properties.
+- **Media heavy** - 20-50 photos per property. Lazy loading, CDNs.
+- **Maps integration** - Property markers, clustering, neighborhoods.
+- **Scheduling** - Showings, open houses, time zones.
+- **AI matching** - "I want something modern but near work" → actual properties.
+- **Lead management** - Capture, assign, follow-up. Sales workflows.
 
 ## How We Work
 
-**Ship weekly**. Every Friday. Doesn't have to be big, but we deploy.
+**Ship weekly**. Every Friday.
 
-**Type safety everywhere**. If it's not typed, it's not done. Pydantic, TypeScript strict, mypy.
+**Type safety**. No "any".
 
-**Observability first**. Can't debug what you can't see. Sentry for errors, custom metrics for agent performance.
+**Sentry first**. Can't debug what you don't see.
 
-**Test your code**. 80% coverage minimum. No exceptions for "simple" endpoints.
+**80% test coverage**. No exceptions.
 
 ## Communication
 
-- **Google Chat** - Day-to-day. Threads, not walls of text.
-- **Google Drive** - Architecture docs, RFCs. Not in Notion, not in Confluence.
-- **Trello** - Sprint tracking. Simple boards.
-- **GitHub** - Code lives here. Issues, PRs, Actions.
-- **Figma** - Design. We're using MCP for rapid prototyping.
-
-## Why Not X?
-
-We've made these choices. Here's the thinking:
-
-- **FastAPI over Django**: We need async. Django's sync-first mindset fights us. FastAPI gives us asyncio-native everything.
-- **PostgreSQL over Mongo**: We need transactions. Agent state, billing, user data - all relational. JSONB gives flexibility when we need it.
-- **CrewAI + LangGraph**: CrewAI for "three agents collaborate on this". LangGraph for "this is a complex state machine with human checkpoints". Different tools.
-- **Self-hosted PostgreSQL over Supabase in prod**: Control. Backups. Performance tuning. Supabase is great for dev.
+- **Google Chat** - Daily
+- **Google Drive** - Docs
+- **Trello** - Tasks
+- **GitHub** - Code
+- **Figma** - Design
 
 ## Quick Links
 
-- [Core Architecture](./01-core/) - System design decisions
-- [Team Structure](./02-team/) - Engineering roles
-- [Infrastructure](./03-infrastructure/) - DevOps, monitoring
-- [Development](./04-development/) - Coding standards
-- [Policies](./05-policies/) - Engineering guidelines
+- [Core Architecture](./01-core/)
+- [Team Structure](./02-team/)
+- [Infrastructure](./03-infrastructure/)
+- [Development](./04-development/)
+- [Policies](./05-policies/)
 
 ## Getting Started
 
 1. Read [Core Architecture](./01-core/)
-2. Set up dev environment: [Infrastructure/SETUP](./03-infrastructure/SETUP.md)
-3. Review [Development Standards](./04-development/STANDARDS.md)
-4. Jump in #engineering on Google Chat
+2. Set up dev environment: [Setup](./03-infrastructure/SETUP.md)
+3. Review [Standards](./04-development/STANDARDS.md)
 
 ## Contact
 
